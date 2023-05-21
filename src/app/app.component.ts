@@ -8,7 +8,7 @@ import {DataService} from "./service/data.service";
 })
 export class AppComponent {
   title = 'acmejha_ui';
-  year =  new Date().getFullYear()
+
 
   constructor(
     private dataService: DataService

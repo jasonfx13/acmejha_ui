@@ -8,12 +8,14 @@ import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import { FooterComponent } from './footer/footer.component';
 import {SideNavComponent} from "./side-nav/side-nav.component";
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    SideNavComponent
+    SideNavComponent,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +24,9 @@ import {SideNavComponent} from "./side-nav/side-nav.component";
   ],
   exports: [
     HeaderComponent,
-    SideNavComponent
+    SideNavComponent,
+    FooterComponent,
+    LoadingComponent
   ]
 })
 export class SharedModule {}

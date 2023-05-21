@@ -3,10 +3,11 @@ header {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: 9998;
+  z-index: 9;
   #navbar_main {
     // background: #031A36;
     background: #141D26;
+    padding: 1rem;
 
   }
   .nav-logo-container {

@@ -1,44 +1,66 @@
 <div class="container-fluid ">
   <div class="container py-3 px-4 py-4 px-sm-1 px-md-3 px-lg-3" style="min-height: 80vh;">
 
+    <ng-container *ngIf="!loading; else isLoading">
+      <ng-container *ngIf="jobs.length > 0; else noJobs">
 
+        <div class="container" style="display: flex; justify-content: flex-end; margin: 1rem 0;">
+          <button class="btn btn-primary" (click)="showJobForm(mymodal)">Add New Job</button>
+        </div>
 
-
-
-
-
-    
-    <ul >
-      <li *ngFor="let job of jobs">
-        {{job.title}}
-        <ng-container  *ngIf="job.steps.length > 0">
-          <h3>Steps</h3>
-          <ul>
-            <li *ngFor="let step of job.steps">
-              {{step.title}}
-              <ng-container *ngIf="step.hazards.length > 0">
-                <h3>Hazards</h3>
+        <ngb-accordion [closeOthers]="true" activeIds="static-1">
+          <ngb-panel id="static-1" [title]="job.title" *ngFor="let job of jobs">
+            <ng-template ngbPanelContent>
+              <ng-container  *ngIf="job.steps.length > 0">
+                <h3>Tasks/Steps <button class="btn btn-light"><span class="icon-addicon"></span></button></h3>
                 <ul>
-                  <li *ngFor="let hazard of step.hazards">
-                    {{hazard.title}}
-                    <ng-container  *ngIf="hazard.safeguards.length > 0">
-                      <h3>Safeguards</h3>
+                  <li *ngFor="let step of job.steps">
+                    {{step.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_step_' + step.id"></span>
+                    <ng-container *ngIf="step.hazards.length > 0">
+                      <h3>Hazards  <button class="btn btn-light"><span class="icon-addicon"></span> </button></h3>
                       <ul>
-                        <li *ngFor="let safeguard of hazard.safeguards">
-                          {{safeguard.id + ' ' + safeguard.title}}
+                        <li *ngFor="let hazard of step.hazards">
+                          {{hazard.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_hazard_' + hazard.id"></span>
+                          <ng-container  *ngIf="hazard.safeguards.length > 0">
+                            <h3>Safeguards <button class="btn btn-light"><span class="icon-addicon"></span> </button></h3>
+                            <ul>
+                              <li *ngFor="let safeguard of hazard.safeguards">
+                                {{safeguard.id + ' ' + safeguard.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_safeguard_' + safeguard.id"></span>
+                              </li>
+                            </ul>
+                          </ng-container>
                         </li>
                       </ul>
                     </ng-container>
-
                   </li>
                 </ul>
               </ng-container>
+              <div class="actions">
+                <button class="btn btn-primary">Edit Job</button>
+              </div>
+            </ng-template>
+          </ngb-panel>
 
-            </li>
-          </ul>
-        </ng-container>
+        </ngb-accordion>
+      </ng-container>
 
-      </li>
-    </ul>
+      <ng-template #noJobs>
+        <div class="info-box">
+          <p>There are currently no jobs.</p>
+          <div class="action">
+            <button class="btn btn-primary"  (click)="showJobForm(mymodal)">Add New Job</button>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
   </div>
 </div>
+<ng-template #isLoading>
+  <div class="load-spinner" style="display: flex; justify-content: center; align-items: center; min-height: 400px;">
+    <app-loading></app-loading>
+  </div>
+
+</ng-template>
+<ng-template #mymodal let-modal>
+  <app-job-form (doEmitData)="showWassup($event)" [modal]="modal"></app-job-form>
+</ng-template>
