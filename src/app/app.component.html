@@ -1,1 +1,22 @@
-<router-outlet></router-outlet>
+<app-header></app-header>
+<app-side-nav
+  [sidenavTemplateRef]="navContent"
+  [navWidth]="280"
+  [duration]="0.35">
+</app-side-nav>
+<div class="main-container">
+
+  <section>
+    <router-outlet></router-outlet>
+  </section>
+
+  <footer>
+    <div class="footer-inner container py-5" style="text-align: center; justify-self: flex-end;">
+      Copyright &copy; {{ year }}. jfxgraphics.com | All rights reserved.
+    </div>
+  </footer>
+
+</div>
+<ng-template #navContent>
+  Side Nav Bar Content Here
+</ng-template>

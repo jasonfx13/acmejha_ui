@@ -1,0 +1,44 @@
+<div class="container-fluid ">
+  <div class="container py-3 px-4 py-4 px-sm-1 px-md-3 px-lg-3" style="min-height: 80vh;">
+
+
+
+
+
+
+
+    
+    <ul >
+      <li *ngFor="let job of jobs">
+        {{job.title}}
+        <ng-container  *ngIf="job.steps.length > 0">
+          <h3>Steps</h3>
+          <ul>
+            <li *ngFor="let step of job.steps">
+              {{step.title}}
+              <ng-container *ngIf="step.hazards.length > 0">
+                <h3>Hazards</h3>
+                <ul>
+                  <li *ngFor="let hazard of step.hazards">
+                    {{hazard.title}}
+                    <ng-container  *ngIf="hazard.safeguards.length > 0">
+                      <h3>Safeguards</h3>
+                      <ul>
+                        <li *ngFor="let safeguard of hazard.safeguards">
+                          {{safeguard.id + ' ' + safeguard.title}}
+                        </li>
+                      </ul>
+                    </ng-container>
+
+                  </li>
+                </ul>
+              </ng-container>
+
+            </li>
+          </ul>
+        </ng-container>
+
+      </li>
+    </ul>
+  </div>
+</div>
