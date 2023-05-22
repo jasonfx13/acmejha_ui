@@ -1,0 +1,38 @@
+<div class="create-steps-form">
+
+<!--  <button ngbAutofocus type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>-->
+  <ng-container *ngIf="!processing; else loading">
+
+  </ng-container>
+  <form [formGroup]="stepsForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <div formArrayName="steps">
+        <h2>Steps</h2>
+        <div *ngFor="let step of steps.controls; let i=index">
+          <!-- The repeated alias template -->
+          <label
+            for="title-{{i}}">title:
+          </label>
+          <input
+            class="form-control"
+            id="title-{{i}}"
+            type="text"
+            [formControlName]="i"
+          >
+
+        </div>
+
+        <button class="btn btn-light" type="button" (click)="addStep()">+ Add step</button>
+      </div>
+    </div>
+
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+</div>
+<ng-template #loading>
+  <div class="load-spinner" style="display: flex; justify-content: center; align-items: center; min-height: 400px;">
+    <app-loading></app-loading>
+  </div>
+
+</ng-template>

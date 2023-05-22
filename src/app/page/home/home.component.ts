@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../service/data.service";
 import {NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import {CreateJobFormComponent} from "../../component/create-job-form/create-job-form.component";
+import {JobFormComponent} from "../../component/job-form/job-form.component";
 import {HazardModel, JobModel, SafeguardModel, StepModel} from "../../model/job.model";
-import {EditJobFormComponent} from "../../component/edit-job-form/edit-job-form.component";
-import {CreateStepsFormComponent} from "../../component/create-steps-form/create-steps-form.component";
+import {StepsFormComponent} from "../../component/steps-form/steps-form.component";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
@@ -14,7 +14,6 @@ import {CreateStepsFormComponent} from "../../component/create-steps-form/create
 export class HomeComponent implements OnInit {
   jobs: JobModel[] | any[] = [];
   loading = true
-  activeIndex = 0;
   constructor(
     private dataService: DataService,
     private modalService: NgbModal
@@ -33,30 +32,38 @@ export class HomeComponent implements OnInit {
       }
     })
   }
-  changePanel(index: number) {
-    console.log(index);
-    this.activeIndex = index;
-  }
 
   closeResult = '';
   createNewJob(content: any) {
-    this.modalService.open(content ).result.then(
-      (result) => {
-        console.log(result);
-        this.closeResult = `Closed with: ${result}`;
-      }
-      // (reason) => {
-      //   console.log(reason);
-      //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      // },
-    );
+    // this.modalService.open(content ).result.then(
+    //   (result) => {
+    //     console.log(result);
+    //     console.log('push new job');
+    //     this.jobs.push(result);
+    //   }
+    //
+    //
+    //   // (reason) => {
+    //   //   console.log(reason);
+    //   //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    //   // },
+    // );
+
+    const modalRef = this.modalService.open(JobFormComponent);
+    modalRef.componentInstance.doEmitData.subscribe((receivedEntry: any) => {
+      console.log(receivedEntry);
+      this.jobs.push(receivedEntry);
+    })
+    // modalRef.componentInstance.job = null
+
   }
 
   editJob(job: any) {
     console.log(job);
-    const modalRef = this.modalService.open(EditJobFormComponent);
+    const modalRef = this.modalService.open(JobFormComponent);
 
     modalRef.componentInstance.job = job;
+    modalRef.componentInstance.editMode = true;
 
     modalRef.componentInstance.doEmitData.subscribe((receivedEntry: any) => {
       console.log(receivedEntry);
@@ -69,25 +76,72 @@ export class HomeComponent implements OnInit {
     // });
   }
 
-  editStep(job: JobModel) {
-    const modalRef = this.modalService.open(CreateStepsFormComponent);
+  editStep(step: StepModel) {
+    // const modalRef = this.modalService.open(JobFormComponent);
+    //
+    // modalRef.componentInstance.job = job
+    // modalRef.componentInstance.editMode = true
+    // modalRef.componentInstance.formStep = 'create-steps';
+    console.log(step)
+  }
 
-    modalRef.componentInstance.job = job
-    modalRef.componentInstance.editMode = true
+  deleteStep(step: StepModel) {
 
+    console.log(step);
   }
 
   addSteps(job: JobModel) {
-    const modalRef = this.modalService.open(CreateStepsFormComponent);
+    const modalRef = this.modalService.open(JobFormComponent);
 
     modalRef.componentInstance.job = job
-    modalRef.componentInstance.editMode = false
+    modalRef.componentInstance.editMode = true
+    modalRef.componentInstance.formStep = 'create-steps';
+  }
+  showAddStepForm = false;
+  toggleAddStepForm(job: JobModel) {
+    this.showAddStepForm = !this.showAddStepForm
   }
 
 
-
-  showWassup(event: any) {
+  errors: any[] = []
+  doAddNewJob(event: any) {
     console.log(event);
+    this.jobs.push(event);
+  }
+
+  doAddStep(form: NgForm, job:JobModel|any) {
+    console.log(form);
+    this.loading = true;
+    if(form.value.title == '') {
+      this.errors.push({message: 'Title is required'})
+      return
+    }
+
+    console.log(form.value.title);
+
+    let data = {
+      title: form.value.title,
+      jobId: job.id
+    }
+    console.log(data);
+
+    this.dataService.addStep(data).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        if(this.jobs.find((j) => j.id == job.id).steps) {
+          this.jobs.find((j) => j.id == job.id).steps.push(res.data);
+        } else {
+          this.jobs.find((j) => j.id == job.id).steps = []
+          this.jobs.find((j) => j.id == job.id).steps.push(res.data);
+        }
+
+        this.loading = false
+      },
+      error: (err) => {
+        console.log(err)
+        this.loading = false
+      }
+    })
   }
 
 }

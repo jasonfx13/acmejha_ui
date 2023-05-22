@@ -26,11 +26,14 @@ export class DataService {
     return this.http.patch(this.env.apiEndpoint + '/jobs/' + job.id, job);
   }
 
-  addSteps(steps: StepModel) {
+  addSteps(steps: StepModel[]) {
     return this.http.post(this.env.apiEndpoint + '/steps/bulk', steps)
   }
+  addStep(step: StepModel) {
+    return this.http.post(this.env.apiEndpoint + '/steps', step)
+  }
 
-  udpateStep(step: StepModel) {
+  updateSteps(step: StepModel) {
     return this.http.patch(this.env.apiEndpoint + '/steps/' + step.id, step)
   }
 

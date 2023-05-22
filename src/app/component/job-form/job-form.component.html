@@ -1,0 +1,110 @@
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{editMode ? 'Edit ' : 'Create New '}} Job</h4>
+    <button ngbAutofocus type="button" class="close" aria-label="Close" (click)="doClose()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <ng-container *ngIf="!processingForm; else isLoading">
+      <ng-container *ngIf="errors.length > 0">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+          {{error.message}}
+        </div>
+
+      </ng-container>
+
+<!--      <ng-container *ngIf="formStep == 'create-job'">-->
+      <ng-container *ngIf="!sucess; else showSucessMessage">
+        <div class="jobs-form-container">
+          <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <div class="form-group">
+              <label
+                for="title">
+                Title
+              </label>
+              <input
+                (focusin)="errors = []"
+                type="text"
+                class="form-control"
+                id="title"
+                required
+                [(ngModel)]="jobTitle"
+                name="title"
+                #title="ngModel"
+                placeholder="Enter Job Title"
+              >
+            </div>
+
+            <div class="form-group">
+              <label
+                for="name">
+                Your Name
+              </label>
+              <input
+                (focusin)="errors = []"
+                type="text"
+                class="form-control"
+                id="name"
+                required
+                [(ngModel)]="createdBy"
+                name="author"
+                #author="ngModel"
+                placeholder="Enter Your Name"
+              >
+
+            </div>
+
+            <div
+              class="form-group"
+            >
+              <label
+                for="description">
+                Job Description
+              </label>
+              <textarea
+                (focusin)="errors = []"
+                class="form-control"
+                id="description"
+                [(ngModel)]="jobDescription"
+                name="description"
+                #description="ngModel"
+                placeholder="Enter short job description"
+                rows="3"
+              ></textarea>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Next</button>
+          </form>
+        </div>
+      </ng-container>
+      <ng-template #showSucessMessage>
+        <div class="alert alert-success">
+          Job Created Sucessvully
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" (click)="doClose()">Close</button>
+        </div>
+      </ng-template>
+
+<!--      <ng-container *ngIf="formStep == 'create-steps'">-->
+<!--        <app-steps-form [job]="this.job" [modal]="modal" (doEmittProcessing)="doSetProcessing($event)"></app-steps-form>-->
+<!--      </ng-container>-->
+    </ng-container>
+
+
+
+  </div>
+
+
+  <ng-template #isLoading>
+    <div class="load-spinner" style="display: flex; justify-content: center; align-items: center; min-height: 400px;">
+      <app-loading></app-loading>
+    </div>
+
+  </ng-template>
+
+
+
+

@@ -14,19 +14,20 @@
               <div class="description">
                 <p>{{job.description}}</p>
               </div>
-              <button class="btn btn-light" (click)="addSteps(job)"><span class="icon-addicon"></span></button>
-              <ng-container  *ngIf="job.steps.length > 0">
-                <h3>Tasks/Steps </h3>
+              <h6>Tasks/Steps <button class="btn btn-light" (click)="toggleAddStepForm(job)"><span class="icon-addicon"></span></button> </h6>
+              <ng-container  *ngIf="job.steps && job.steps.length > 0">
                 <ul>
-                  <li *ngFor="let step of job.steps">
-                    {{step.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_step_' + step.id" (click)="editStep(job)"></span>
+                  <li *ngFor="let step of job.steps" ngbDropdown >
+                    {{step.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_step_' + step.id" [id]="'step_dropdown_' + step.id" ngbDropdownToggle></span>
+                    <h6>Hazards  <button class="btn btn-light"><span class="icon-addicon"></span> </button></h6>
                     <ng-container *ngIf="step && step.hazards &&  step.hazards.length > 0">
-                      <h3>Hazards  <button class="btn btn-light"><span class="icon-addicon"></span> </button></h3>
+
                       <ul>
                         <li *ngFor="let hazard of step.hazards">
                           {{hazard.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_hazard_' + hazard.id"></span>
+                          <h6>Safeguards <button class="btn btn-light"><span class="icon-addicon"></span> </button></h6>
                           <ng-container  *ngIf="hazard.safeguards.length > 0">
-                            <h3>Safeguards <button class="btn btn-light"><span class="icon-addicon"></span> </button></h3>
+
                             <ul>
                               <li *ngFor="let safeguard of hazard.safeguards">
                                 {{safeguard.id + ' ' + safeguard.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_safeguard_' + safeguard.id"></span>
@@ -36,8 +37,23 @@
                         </li>
                       </ul>
                     </ng-container>
+                    <div ngbDropdownMenu [attr.aria-labelledby]="'step_dropdown_' + step.id">
+                      <button ngbDropdownItem (click)="editStep(step)">Edit {{step.id}}</button>
+                      <button ngbDropdownItem (click)="deleteStep(step)">Delete Step {{step.id}}</button>
+                    </div>
                   </li>
                 </ul>
+              </ng-container>
+              <ng-container *ngIf="showAddStepForm">
+                <form (ngSubmit)="doAddStep(f, job)" #f="ngForm">
+                  <div class="form-group">
+                    <label for="title"></label>
+                    <input type="text" id="title" name="title" ngModel class="form-control">
+                  </div>
+                  <div class="actions">
+                    <button class="btn btn-light">Add</button>
+                  </div>
+                </form>
               </ng-container>
               <div class="actions">
                 <button class="btn btn-primary" (click)="editJob(job)">Edit Job</button>
@@ -58,14 +74,14 @@
     </ng-container>
   </div>
 </div>
+
+<ng-template #newJobForm let-newJobFormModal>
+  <app-job-form (doEmitData)="doAddNewJob($event)" [modal]="newJobFormModal"></app-job-form>
+</ng-template>
 <ng-template #isLoading>
   <div class="load-spinner" style="display: flex; justify-content: center; align-items: center; min-height: 400px;">
     <app-loading></app-loading>
   </div>
 
 </ng-template>
-<ng-template #newJobForm let-newJobFormModal>
-  <app-create-job-form (doEmitData)="showWassup($event)" [modal]="newJobFormModal"></app-create-job-form>
-</ng-template>
-
 

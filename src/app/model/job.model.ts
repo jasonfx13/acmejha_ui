@@ -1,27 +1,27 @@
 export interface JobModel {
-  id: number,
+  id?: number,
   title: string,
-  description: string,
+  description?: string,
   createdBy: string,
   steps?: StepModel[]
 }
 
 export interface StepModel {
-  id: number,
+  id?: number,
   jobId: number,
   title: string,
-  hazards: HazardModel[]
+  hazards?: HazardModel[]
 }
 
 export interface HazardModel {
-  id: number,
+  id?: number,
   stepId: number,
   title: string,
-  safeguards: SafeguardModel[]
+  safeguards?: SafeguardModel[]
 }
 
 export interface SafeguardModel {
-  id: number,
+  id?: number,
   hazardId: number,
   title: string
 }
