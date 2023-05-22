@@ -4,13 +4,15 @@ import {NgForm} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: 'app-job-form',
-  templateUrl: './job-form.component.html',
-  styleUrls: ['./job-form.component.scss']
+  selector: 'app-create-job-form',
+  templateUrl: './create-job-form.component.html',
+  styleUrls: ['./create-job-form.component.scss']
 })
-export class JobFormComponent implements OnInit {
+export class CreateJobFormComponent implements OnInit {
   @Output() doEmitData = new EventEmitter;
   @Input() modal: any;
+
+  editMode = false
 
   @Input() formStep = 'create-job' // create-job, create-step, create-hazard, create-safeguard
 

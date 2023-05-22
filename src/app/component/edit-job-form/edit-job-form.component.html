@@ -1,0 +1,78 @@
+
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Bootstrap Modal</h4>
+  <button type="button" class="close" aria-label="Close" (click)="doClose()">
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <ng-container *ngIf="!loading; else loadSpinner">
+
+    <div class="jobs-form-container">
+      <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div class="form-group">
+          <label
+            for="title">
+            Title
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            ngModel
+            name="title"
+            [(ngModel)]="job.title"
+            placeholder="Enter Job Title"
+          >
+
+        </div>
+
+        <div class="form-group">
+          <label
+            for="createdBy">
+            Your Name
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="createdBy"
+            ngModel
+            name="createdBy"
+            [(ngModel)]="job.createdBy"
+            placeholder="Enter Your Name"
+          >
+
+        </div>
+
+        <div
+          class="form-group"
+        >
+          <label
+            for="description">
+            Job Description
+          </label>
+          <textarea
+            class="form-control"
+            id="description"
+            ngModel
+            name="description"
+            [(ngModel)]="job.description"
+            placeholder="Enter short job description"
+            rows="3"
+          ></textarea>
+        </div>
+
+
+        <button style="margin-top: 1rem;" (click)="doSaveAndContinue(f, 'edit-steps')" class="btn btn-primary">Save and Continue</button>
+        <button style="margin-top: 1rem;" (click)="onSubmit(f)" class="btn btn-primary">Save and Close</button>
+      </form>
+    </div>
+  </ng-container>
+
+
+</div>
+
+<ng-template #loadSpinner>
+  <app-loading></app-loading>
+</ng-template>

@@ -5,7 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
 import {SharedModule} from "../../component/shared/shared.module";
-import {JobFormModule} from "../../component/job-form/job-form.module";
+import {JobFormsModule} from "../../component/job-forms.module";
 
 
 @NgModule({
@@ -17,7 +17,7 @@ import {JobFormModule} from "../../component/job-form/job-form.module";
     HomeRoutingModule,
     NgbAccordionModule,
     SharedModule,
-    JobFormModule
+    JobFormsModule
   ]
 })
 export class HomeModule { }

@@ -5,18 +5,22 @@
       <ng-container *ngIf="jobs.length > 0; else noJobs">
 
         <div class="container" style="display: flex; justify-content: flex-end; margin: 1rem 0;">
-          <button class="btn btn-primary" (click)="showJobForm(mymodal)">Add New Job</button>
+          <button class="btn btn-primary" (click)="createNewJob(newJobForm)">Add New Job</button>
         </div>
 
-        <ngb-accordion [closeOthers]="true" activeIds="static-1">
-          <ngb-panel id="static-1" [title]="job.title" *ngFor="let job of jobs">
+        <ngb-accordion [closeOthers]="true" [activeIds]="'static-0'">
+          <ngb-panel [id]="'static-' + i" [title]="job.title" *ngFor="let job of jobs; let i = index">
             <ng-template ngbPanelContent>
+              <div class="description">
+                <p>{{job.description}}</p>
+              </div>
+              <button class="btn btn-light" (click)="addSteps(job)"><span class="icon-addicon"></span></button>
               <ng-container  *ngIf="job.steps.length > 0">
-                <h3>Tasks/Steps <button class="btn btn-light"><span class="icon-addicon"></span></button></h3>
+                <h3>Tasks/Steps </h3>
                 <ul>
                   <li *ngFor="let step of job.steps">
-                    {{step.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_step_' + step.id"></span>
-                    <ng-container *ngIf="step.hazards.length > 0">
+                    {{step.title}} <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_step_' + step.id" (click)="editStep(job)"></span>
+                    <ng-container *ngIf="step && step.hazards &&  step.hazards.length > 0">
                       <h3>Hazards  <button class="btn btn-light"><span class="icon-addicon"></span> </button></h3>
                       <ul>
                         <li *ngFor="let hazard of step.hazards">
@@ -36,11 +40,10 @@
                 </ul>
               </ng-container>
               <div class="actions">
-                <button class="btn btn-primary">Edit Job</button>
+                <button class="btn btn-primary" (click)="editJob(job)">Edit Job</button>
               </div>
             </ng-template>
           </ngb-panel>
-
         </ngb-accordion>
       </ng-container>
 
@@ -48,7 +51,7 @@
         <div class="info-box">
           <p>There are currently no jobs.</p>
           <div class="action">
-            <button class="btn btn-primary"  (click)="showJobForm(mymodal)">Add New Job</button>
+            <button class="btn btn-primary" (click)="createNewJob(newJobForm)">Add New Job</button>
           </div>
         </div>
       </ng-template>
@@ -61,6 +64,8 @@
   </div>
 
 </ng-template>
-<ng-template #mymodal let-modal>
-  <app-job-form (doEmitData)="showWassup($event)" [modal]="modal"></app-job-form>
+<ng-template #newJobForm let-newJobFormModal>
+  <app-create-job-form (doEmitData)="showWassup($event)" [modal]="newJobFormModal"></app-create-job-form>
 </ng-template>
+
+

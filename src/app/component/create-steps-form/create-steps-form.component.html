@@ -1,0 +1,56 @@
+<div class="create-steps-form">
+  <form [formGroup]="createStepsForm" (ngSubmit)="onSubmit()">
+    <ng-container formArrayName="steps">
+      <div
+        class="form-group"
+        *ngFor="let control of steps.controls; let i = index"
+
+      >
+        <label
+          [for]="'title-' + i">
+          Title
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          [id]="'title-' + i"
+          name="title"
+          formControlName="title"
+          placeholder="Step Title"
+          [value]="this.job.steps[i].title"
+        >
+
+      </div>
+    </ng-container>
+
+
+    <div class="col-xs-12">
+<!--    <div class="row" *ngFor="let stepControl of getControls(); let i = index" [formGroupName]="i" style="margin-bottom: 1em;">-->
+<!--      <div class="col-xs-8">-->
+<!--        <input type="text" class="form-control" formControlName="title">-->
+<!--      </div>-->
+
+
+
+
+<!--      <div class="col-xs-2">-->
+<!--        <button class="btn btn-danger" type="button" (click)="onDeleteStep(i)">X</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--      <div *ngFor="let step of steps.controls; let i=index">-->
+<!--        &lt;!&ndash; The repeated alias template &ndash;&gt;-->
+<!--        <label for="step-{{ i }}">Steps:</label>-->
+<!--        <input id="step-{{ i }}" type="text" [formControlName]="i">-->
+<!--      </div>-->
+    <hr>
+    <div class="row">
+      <div class="col-xs-12">
+        <button class="btn btn-success" (click)="addSteps()" type="button">Add Step</button>
+      </div>
+    </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

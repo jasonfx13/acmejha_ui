@@ -17,49 +17,49 @@ export class DataService {
 
   addJob(job: JobModel) {
     console.log(job);
-    return this.http.post(this.env.apiEndpoint + '/api/v1/job', job);
+    return this.http.post(this.env.apiEndpoint + '/jobs', job);
 
   }
 
   updateJob(job: JobModel) {
     console.log(job)
-    return this.http.patch(this.env.apiEndpoint + '/api/v1/job', job);
+    return this.http.patch(this.env.apiEndpoint + '/jobs/' + job.id, job);
   }
 
   addSteps(steps: StepModel) {
-    return this.http.post(this.env.apiEndpoint + '/api/v1/steps/bulk', steps)
+    return this.http.post(this.env.apiEndpoint + '/steps/bulk', steps)
   }
 
-  udpateSteps(steps: StepModel) {
-    return this.http.patch(this.env.apiEndpoint + '/api/v1/steps/bulk', steps)
+  udpateStep(step: StepModel) {
+    return this.http.patch(this.env.apiEndpoint + '/steps/' + step.id, step)
   }
 
   deleteStep(stepId: number) {
-    return this.http.delete(this.env.apiEndpoint + '/api/v1/steps/' + stepId)
+    return this.http.delete(this.env.apiEndpoint + '/steps/' + stepId)
 
   }
 
   addHazards(hazards: HazardModel) {
-    return this.http.post(this.env.apiEndpoint + '/api/v1/hazards/bulk', hazards)
+    return this.http.post(this.env.apiEndpoint + '/hazards/bulk', hazards)
   }
 
-  updateHazards(hazards: HazardModel) {
-    return this.http.patch(this.env.apiEndpoint + '/api/v1/hazards/bulk', hazards)
+  updateHazard(hazard: HazardModel) {
+    return this.http.patch(this.env.apiEndpoint + '/hazards/' + hazard.id, hazard)
   }
 
   deleteHazard(hazardId: number) {
-    return this.http.delete(this.env.apiEndpoint + '/api/v1/hazards/' + hazardId)
+    return this.http.delete(this.env.apiEndpoint + '/hazards/' + hazardId)
   }
 
   addSafeguards(safeguards: SafeguardModel) {
-    return this.http.post(this.env.apiEndpoint + '/api/v1/safeguards/bulk', safeguards)
+    return this.http.post(this.env.apiEndpoint + '/safeguards/bulk', safeguards)
   }
 
-  updateSafeguards(safeguards: SafeguardModel) {
-    return this.http.patch(this.env.apiEndpoint + '/api/v1/safeguards/bulk', safeguards)
+  updateSafeguard(safeguard: SafeguardModel) {
+    return this.http.patch(this.env.apiEndpoint + '/safeguards/' + safeguard.id, safeguard)
   }
 
   deleteSafeguards(safeguardId: number) {
-    return this.http.delete(this.env.apiEndpoint + '/api/v1/safeguards/' + safeguardId)
+    return this.http.delete(this.env.apiEndpoint + '/safeguards/' + safeguardId)
   }
 }

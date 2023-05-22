@@ -1,8 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../service/data.service";
 import {NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-import {JobFormComponent} from "../../component/job-form/job-form.component";
-import {JobModel} from "../../model/job.model";
+import {CreateJobFormComponent} from "../../component/create-job-form/create-job-form.component";
+import {HazardModel, JobModel, SafeguardModel, StepModel} from "../../model/job.model";
+import {EditJobFormComponent} from "../../component/edit-job-form/edit-job-form.component";
+import {CreateStepsFormComponent} from "../../component/create-steps-form/create-steps-form.component";
 
 @Component({
   selector: 'app-home',
@@ -10,9 +12,9 @@ import {JobModel} from "../../model/job.model";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  jobs: JobModel[] = [];
+  jobs: JobModel[] | any[] = [];
   loading = true
-
+  activeIndex = 0;
   constructor(
     private dataService: DataService,
     private modalService: NgbModal
@@ -31,29 +33,58 @@ export class HomeComponent implements OnInit {
       }
     })
   }
+  changePanel(index: number) {
+    console.log(index);
+    this.activeIndex = index;
+  }
+
   closeResult = '';
-  showJobForm(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+  createNewJob(content: any) {
+    this.modalService.open(content ).result.then(
       (result) => {
         console.log(result);
         this.closeResult = `Closed with: ${result}`;
-      },
-      (reason) => {
-        console.log(reason);
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      },
+      }
+      // (reason) => {
+      //   console.log(reason);
+      //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      // },
     );
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+  editJob(job: any) {
+    console.log(job);
+    const modalRef = this.modalService.open(EditJobFormComponent);
+
+    modalRef.componentInstance.job = job;
+
+    modalRef.componentInstance.doEmitData.subscribe((receivedEntry: any) => {
+      console.log(receivedEntry);
+    })
+
+    // modalRef.result.then((result) => {
+    //   if (result) {
+    //     console.log(result);
+    //   }
+    // });
   }
+
+  editStep(job: JobModel) {
+    const modalRef = this.modalService.open(CreateStepsFormComponent);
+
+    modalRef.componentInstance.job = job
+    modalRef.componentInstance.editMode = true
+
+  }
+
+  addSteps(job: JobModel) {
+    const modalRef = this.modalService.open(CreateStepsFormComponent);
+
+    modalRef.componentInstance.job = job
+    modalRef.componentInstance.editMode = false
+  }
+
+
 
   showWassup(event: any) {
     console.log(event);

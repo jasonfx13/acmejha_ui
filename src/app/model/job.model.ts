@@ -3,7 +3,7 @@ export interface JobModel {
   title: string,
   description: string,
   createdBy: string,
-  steps: StepModel[]
+  steps?: StepModel[]
 }
 
 export interface StepModel {
