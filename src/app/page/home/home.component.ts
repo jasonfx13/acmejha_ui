@@ -24,7 +24,10 @@ export class HomeComponent implements OnInit {
   editHazardFormInstance = 'editHazardFormInstance_'
   editSafeguardFormInstance = 'editSafeguardFormInstance_'
 
+  @ViewChild('stepTitle') stepTitle: ElementRef | any;
+  @ViewChild('hazardTitle') hazardTitle: ElementRef | any;
   @ViewChild('safeguardTitle') safeguardTitle: ElementRef | any;
+
   constructor(
     private dataService: DataService,
     private modalService: NgbModal
@@ -200,7 +203,8 @@ export class HomeComponent implements OnInit {
         this.loading = false
       }
     })
-    this.addStepFormInstance = 'addStepFormInstance_'
+    this.stepTitle.nativeElement.value = '';
+    // this.addStepFormInstance = 'addStepFormInstance_'
   }
 
 
@@ -232,6 +236,8 @@ export class HomeComponent implements OnInit {
         this.loading = false
       }
     })
+    this.hazardTitle.nativeElement.value = ''
+
   }
 
   doAddSafeguard(form:NgForm, hazard: HazardModel|any) {
@@ -327,15 +333,22 @@ export class HomeComponent implements OnInit {
     }
     })
   }
-  handleErrors(doClear = false, errors:any[]) {
-    if(doClear) {
-      this.errors = [];
-      return
-    }
-
-    this.errors = errors.map(e => e.error.message);
+  handleErrors(doClear = false, errors:any) {
+    this.errors.push({message: errors.error.message})
 
     console.log(this.errors);
+  }
+  errorAlertInstance = 'errorAlertInstance_'
+  clearErrors(i:any, clearAll = false) {
+    if(clearAll) {
+      this.errors = [];
+    } else {
+      if(document.getElementById('errorAlertInstance_' + i))
+      { // @ts-ignore
+        document.getElementById('errorAlertInstance_' + i).remove();
+      }
+    }
+
   }
 
 }

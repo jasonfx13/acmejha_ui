@@ -3,9 +3,12 @@
 
     <ng-container *ngIf="!loading; else isLoading">
       <ng-container *ngIf="errors.length > 0">
-        <div class="alert alert-danger" *ngFor="let error of errors">
-          {{error.message}}
-        </div>
+        <ng-container *ngFor="let error of errors; let i = index">
+          <div [id]="'errorAlertInstance_' + i" [class]="'alert alert-danger ' + 'errorAlertInstance_' + i">
+            {{error.message}} <span style="float:right; position: relative; top: .2rem;" (click)="clearErrors(i)" class="icon-x-close3"></span>
+          </div>
+        </ng-container>
+
       </ng-container>
       <h1>Job Hazard Analysis</h1>
       <ng-container *ngIf="jobs.length > 0; else noJobs">
@@ -105,8 +108,9 @@
                       </ul>
 
                     </ng-container>
+
                     <!-- Add Hazard -->
-                    <ng-container *ngIf="addHazardFormInstance == 'addHazardFormInstance_'  && this.editJobInstance == 'editJobInstance_' + job.id">
+                    <ng-container *ngIf="addHazardFormInstance == 'addHazardFormInstance_'  && this.editJobInstance == 'editJobInstance_' + job.id || addHazardFormInstance == 'addHazardFormInstance_' && (job.steps && job.steps.hazards && job.steps.hazards.length == 0)">
                       <div class="form-placeholder">
                         <button class="btn btn-light" (click)="toggleAddHazardsForm(step.id)"><span class="icon-addicon"></span> Add Hazard</button>
                       </div>
@@ -115,7 +119,7 @@
                       <form (ngSubmit)="doAddHazard(hazardForm, step)" #hazardForm="ngForm">
                         <div class="form-group">
                           <label for="hazardTitle">Title</label>
-                          <input type="text" id="hazardTitle" name="hazardTitle" ngModel class="form-control">
+                          <input type="text" id="hazardTitle" #hazardTitle name="hazardTitle" ngModel class="form-control">
                         </div>
                         <div class="actions">
                           <button class="btn btn-light">Add</button>
@@ -137,7 +141,7 @@
                 <form (ngSubmit)="doAddStep(stepForm, job)" #stepForm="ngForm">
                   <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" id="title" name="title" ngModel class="form-control">
+                    <input type="text" id="title" name="title" #stepTitle ngModel class="form-control">
                   </div>
                   <div class="actions">
                     <button class="btn btn-light">Add</button>
