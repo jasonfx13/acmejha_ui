@@ -2,26 +2,25 @@
   <div class="container py-3 px-4 py-4 px-sm-1 px-md-3 px-lg-3" style="min-height: 80vh;">
 
     <ng-container *ngIf="!loading; else isLoading">
-      <ng-container *ngIf="jobs.length > 0; else noJobs">
-
-        <div class="container" style="display: flex; justify-content: flex-end; margin: 1rem 0;">
-          <button class="btn btn-primary" (click)="createNewJob(newJobForm)">Add New Job</button>
+      <ng-container *ngIf="errors.length > 0">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+          {{error.message}}
         </div>
-
-        <ngb-accordion [closeOthers]="true" [activeIds]="'static-0'">
+      </ng-container>
+      <h1>Job Hazard Analysis</h1>
+      <ng-container *ngIf="jobs.length > 0; else noJobs">
+        <ngb-accordion (panelChange)="resetEditingMode()" [closeOthers]="true" [activeIds]="'static-0'">
           <ngb-panel [id]="'static-' + i" [title]="job.title" *ngFor="let job of jobs; let i = index">
             <ng-template ngbPanelContent>
-              <div class="description">
-                <p>{{job.description}}</p>
-              </div>
+              <p class="description" *ngIf="job.description">
+                {{job.description}}
+              </p>
               <h6>Tasks/Steps</h6>
-              <ng-container  *ngIf="job.steps && job.steps.length > 0">
+              <ng-container *ngIf="job.steps && job.steps.length > 0">
                 <ul>
                   <li *ngFor="let step of job.steps; let i = index"  >
-
                     <ng-container *ngIf="editStepFormInstance != 'editStepFormInstance_' +step.id">
                       {{step.title}}
-
                       <span ngbDropdown><span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_step_' + step.id" [id]="'step_dropdown_' + step.id" ngbDropdownToggle></span>
                       <div ngbDropdownMenu [attr.aria-labelledby]="'step_dropdown_' + step.id">
                         <button ngbDropdownItem (click)="editStep(step.id)">Edit Step {{step.id}}</button>
@@ -41,8 +40,6 @@
                     <ng-container *ngIf="step && step.hazards &&  step.hazards.length > 0">
                       <ul>
                         <li *ngFor="let hazard of step.hazards; let i = index">
-
-
                           <ng-container *ngIf="editHazardFormInstance != 'editHazardFormInstance_' +hazard.id">
                             {{hazard.title}}
                             <span ngbDropdown>
@@ -61,11 +58,8 @@
                               <button (click)="editStepFormInstance = 'editHazardFormInstance_'">X</button>
                             </form>
                           </ng-container>
-
                           <h6>Safeguards for {{hazard.title}}</h6>
-
                           <ng-container  *ngIf="hazard.safeguards.length > 0">
-
                             <ul>
                               <li *ngFor="let safeguard of hazard.safeguards; let i = index">
                                 <ng-container *ngIf="editSafeguardFormInstance != 'editSafeguardFormInstance_' + safeguard.id">
@@ -89,8 +83,6 @@
                             </ul>
                           </ng-container>
 
-
-
                           <!-- Add Safeguard -->
                           <ng-container *ngIf="addSafeguardFormInstance == 'addSafeguardFormInstance_' &&  this.editJobInstance == 'editJobInstance_' + job.id">
                             <div class="form-placeholder">
@@ -108,17 +100,13 @@
                                 <button class="btn btn-light" (click)="safeguardTitle.value = ''; addSafeguardFormInstance = 'addSafeguardFormInstance_'; false">Cancel</button>
                               </div>
                             </form>
-
                           </ng-container>
-
-
-
                         </li>
                       </ul>
 
                     </ng-container>
                     <!-- Add Hazard -->
-                    <ng-container *ngIf="addHazardFormInstance == 'addHazardFormInstance_'  &&  this.editJobInstance == 'editJobInstance_' + job.id">
+                    <ng-container *ngIf="addHazardFormInstance == 'addHazardFormInstance_'  && this.editJobInstance == 'editJobInstance_' + job.id">
                       <div class="form-placeholder">
                         <button class="btn btn-light" (click)="toggleAddHazardsForm(step.id)"><span class="icon-addicon"></span> Add Hazard</button>
                       </div>
@@ -133,18 +121,13 @@
                           <button class="btn btn-light">Add</button>
                         </div>
                       </form>
-
                     </ng-container>
-
-
-
-
                   </li>
                 </ul>
               </ng-container>
 
               <!-- Add Step-->
-              <ng-container *ngIf="addStepFormInstance == 'addStepFormInstance_'  && this.editJobInstance == 'editJobInstance_' + job.id">
+              <ng-container *ngIf="addStepFormInstance == 'addStepFormInstance_'">
                 <div class="form-placeholder">
                   <button class="btn btn-light" (click)="toggleAddStepForm(i)"><span class="icon-addicon"></span> Add Step</button>
                 </div>
@@ -158,22 +141,27 @@
                   </div>
                   <div class="actions">
                     <button class="btn btn-light">Add</button>
+                    <button class="btn btn-light" (click)="addStepFormInstance = 'addStepFormInstance_'; false">Cancel</button>
                   </div>
                 </form>
               </ng-container>
               <div class="actions" style="margin-top: 1rem;">
                 <button class="btn btn-primary" (click)="editJob(job)">Edit Job</button>
+                <button class="btn btn-primary" (click)="editTasks(job.id)">{{editJobInstance == 'editJobInstance_' ? 'Edit Tasks' : 'Done Editing Tasks'}}</button>
                 <button class="btn btn-danger" (click)="deleteJob(job)">Delete Job</button>
 
               </div>
             </ng-template>
           </ngb-panel>
         </ngb-accordion>
+        <div class="container" style="margin: 1rem 0;">
+          <button class="btn btn-primary" (click)="createNewJob(newJobForm)">Add New Job</button>
+        </div>
       </ng-container>
 
       <ng-template #noJobs>
         <div class="info-box">
-          <p>There are currently no jobs.</p>
+          <p>Get started with a new Job Hazard Analysis</p>
           <div class="actions">
             <button class="btn btn-primary" (click)="createNewJob(newJobForm)">Add New Job</button>
           </div>

@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   jobs: JobModel[] | any[] = [];
   loading = true
   editMode = false;
-  // showAddStepForm = false;
+  errors: any[] = [];
   addStepFormInstance = 'addStepFormInstance_'
   addHazardFormInstance = 'addHazardFormInstance_'
   addSafeguardFormInstance = 'addSafeguardFormInstance_'
@@ -24,9 +24,7 @@ export class HomeComponent implements OnInit {
   editHazardFormInstance = 'editHazardFormInstance_'
   editSafeguardFormInstance = 'editSafeguardFormInstance_'
 
-
   @ViewChild('safeguardTitle') safeguardTitle: ElementRef | any;
-
   constructor(
     private dataService: DataService,
     private modalService: NgbModal
@@ -35,13 +33,15 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getJobs(true).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.jobs = res.data
         this.loading = false
       },
       error: (err) => {
-        console.log(err)
+        this.handleErrors(false, err)
         this.loading = false
+      },
+      complete: () => {
+
       }
     })
   }
@@ -49,7 +49,6 @@ export class HomeComponent implements OnInit {
   createNewJob(content: any) {
     const modalRef = this.modalService.open(JobFormComponent);
     modalRef.componentInstance.doEmitData.subscribe((receivedEntry: any) => {
-      console.log(receivedEntry);
       this.jobs.push(receivedEntry);
     })
   }
@@ -59,21 +58,26 @@ export class HomeComponent implements OnInit {
     modalRef.componentInstance.entity = {dialogTitle: 'Job Deletion', label: job.title}
     modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
       if(res) {
-        this.dataService.deleteStep(job.id).subscribe({
+        this.dataService.deleteJob(job.id).subscribe({
           next: (res) => {
-            console.log(res);
             // @ts-ignore
-            jobs.splice(jobs.findIndex(j => j.id == job.id), 1)
+            this.jobs.splice(this.jobs.findIndex(j => j.id == job.id), 1)
           },
           error: (err) => {
-            console.log(err);
+            this.handleErrors(false, err);
           }
         })
       }
     })
   }
-
+  resetEditingMode() {
+    this.editJobInstance = 'editJobInstance_'
+  }
   editJobInstance = 'editJobInstance_'
+  editTasks(jobId:number) {
+    this.editJobInstance = (this.editJobInstance == 'editJobInstance_' ? 'editJobInstance_' + jobId :'editJobInstance_')
+
+  }
   editJob(job: any) {
     const modalRef = this.modalService.open(JobFormComponent);
 
@@ -83,12 +87,6 @@ export class HomeComponent implements OnInit {
     modalRef.componentInstance.doEmitData.subscribe((receivedEntry: any) => {
       console.log(receivedEntry);
     })
-
-    // modalRef.result.then((result) => {
-    //   if (result) {
-    //     console.log(result);
-    //   }
-    // });
   }
 
   editStep(stepId: number) {
@@ -102,12 +100,11 @@ export class HomeComponent implements OnInit {
       if(res) {
         this.dataService.deleteStep(step.id).subscribe({
           next: (res) => {
-            console.log(res);
             // @ts-ignore
             job.steps?.splice(i, 1)
           },
           error: (err) => {
-            console.log(err);
+            this.handleErrors(false, err);
           }
         })
       }
@@ -124,12 +121,11 @@ export class HomeComponent implements OnInit {
       if(res) {
         this.dataService.deleteHazard(hazard.id).subscribe({
           next: (res) => {
-            console.log(res);
             // @ts-ignore
             step.hazards?.splice(i, 1)
           },
           error: (err) => {
-            console.log(err);
+            this.handleErrors(false, err);
           }
         })
       }
@@ -145,12 +141,11 @@ export class HomeComponent implements OnInit {
       if(res) {
         this.dataService.deleteSafeguard(safeguard.id).subscribe({
           next: (res) => {
-            console.log(res);
             // @ts-ignore
             hazard.safeguards?.splice(i, 1)
           },
           error: (err) => {
-            console.log(err);
+            this.handleErrors(false, err);
           }
         })
       }
@@ -167,39 +162,30 @@ export class HomeComponent implements OnInit {
   toggleAddHazardsForm(i: any) {
     // @ts-ignore
     this.addHazardFormInstance = 'addHazardFormInstance_' + i;
-
-    console.log(this.addHazardFormInstance);
   }
 
   toggleSafeguardForm(i: any) {
     this.addSafeguardFormInstance = 'addSafeguardFormInstance_' + i
   }
 
-  errors: any[] = []
   doAddNewJob(event: any) {
-    console.log(event);
     this.jobs.push(event);
   }
 
   doAddStep(form: NgForm, job:JobModel|any) {
-    console.log(form);
     // this.loading = true;
     if(form.value.title == '') {
       this.errors.push({message: 'Title is required'})
       return
     }
 
-    console.log(form.value.title);
-
     let data = {
       title: form.value.title,
       jobId: job.id
     }
-    console.log(data);
 
     this.dataService.addStep(data).subscribe({
       next: (res: any) => {
-        console.log(res)
         if(this.jobs.find((j) => j.id == job.id).steps) {
           this.jobs.find((j) => j.id == job.id).steps.push(res.data);
         } else {
@@ -210,7 +196,7 @@ export class HomeComponent implements OnInit {
         this.loading = false
       },
       error: (err) => {
-        console.log(err)
+        this.handleErrors(false, err);
         this.loading = false
       }
     })
@@ -219,24 +205,19 @@ export class HomeComponent implements OnInit {
 
 
   doAddHazard(form: NgForm, step:StepModel|any) {
-    console.log(form);
     // this.loading = true;
     if(form.value.hazardTitle == '') {
       this.errors.push({message: 'Title is required'})
       return
     }
 
-    console.log(form.value.hazardTitle);
-
     let data = {
       title: form.value.hazardTitle,
       stepId: step.id
     }
-    console.log(data);
 
     this.dataService.addHazard(data).subscribe({
       next: (res: any) => {
-        console.log(res)
         if(step.hazards) {
           step.hazards.push(res.data);
         } else {
@@ -247,31 +228,26 @@ export class HomeComponent implements OnInit {
         this.loading = false
       },
       error: (err) => {
-        console.log(err)
+        this.handleErrors(false, err);
         this.loading = false
       }
     })
   }
 
   doAddSafeguard(form:NgForm, hazard: HazardModel|any) {
-    console.log(form);
     // this.loading = true;
     if(form.value.safeguardTitle == '') {
       this.errors.push({message: 'Title is required'})
       return
     }
 
-    console.log(form.value.hazardTitle);
-
     let data = {
       title: form.value.safeguardTitle,
       hazardId: hazard.id
     }
-    console.log(data);
 
     this.dataService.addSafeguard(data).subscribe({
       next: (res: any) => {
-        console.log(res)
         if(hazard.safeguards) {
           hazard.safeguards.push(res.data);
         } else {
@@ -282,7 +258,7 @@ export class HomeComponent implements OnInit {
         this.loading = false
       },
       error: (err) => {
-        console.log(err)
+        this.handleErrors(false, err);
         this.loading = false
       }
     })
@@ -306,7 +282,7 @@ export class HomeComponent implements OnInit {
         this.editStepFormInstance = 'editStepFormInstance_';
       },
       error: (err) => {
-        console.log(err);
+        this.handleErrors(false, err);
       }
     })
   }
@@ -327,7 +303,7 @@ export class HomeComponent implements OnInit {
         this.editHazardFormInstance = 'editHazardFormInstance_';
       },
       error: (err) => {
-        console.log(err);
+        this.handleErrors(false, err);
       }
     })
   }
@@ -344,13 +320,22 @@ export class HomeComponent implements OnInit {
 
     this.dataService.updateSafeguard(data).subscribe({
       next: (res) => {
-        console.log(res);
         this.editSafeguardFormInstance = 'editSafeguardFormInstance_'
       },
       error: (err) => {
-        console.log(err);
+        this.handleErrors(false, err);
     }
     })
+  }
+  handleErrors(doClear = false, errors:any[]) {
+    if(doClear) {
+      this.errors = [];
+      return
+    }
+
+    this.errors = errors.map(e => e.error.message);
+
+    console.log(this.errors);
   }
 
 }

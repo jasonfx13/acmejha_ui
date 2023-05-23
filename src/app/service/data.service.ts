@@ -46,6 +46,12 @@ export class DataService {
 
   }
 
+  deleteJob(jobId: number) {
+    return this.http.delete(this.env.apiEndpoint + '/jobs/' + jobId)
+
+  }
+
+
   addHazards(hazards: HazardModel) {
     return this.http.post(this.env.apiEndpoint + '/hazards/bulk', hazards)
   }
