@@ -7,10 +7,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./component/shared/shared.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { AreYouSureComponent } from './component/are-you-sure/are-you-sure.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AreYouSureComponent
   ],
   imports: [
     BrowserModule,

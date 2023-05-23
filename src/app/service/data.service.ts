@@ -37,6 +37,10 @@ export class DataService {
     return this.http.patch(this.env.apiEndpoint + '/steps/' + step.id, step)
   }
 
+  updateStep(step: StepModel) {
+    return this.http.patch(this.env.apiEndpoint + '/steps/' + step.id, step)
+  }
+
   deleteStep(stepId: number) {
     return this.http.delete(this.env.apiEndpoint + '/steps/' + stepId)
 
@@ -44,6 +48,10 @@ export class DataService {
 
   addHazards(hazards: HazardModel) {
     return this.http.post(this.env.apiEndpoint + '/hazards/bulk', hazards)
+  }
+
+  addHazard(hazard: HazardModel) {
+    return this.http.post(this.env.apiEndpoint + '/hazards', hazard)
   }
 
   updateHazard(hazard: HazardModel) {
@@ -58,11 +66,15 @@ export class DataService {
     return this.http.post(this.env.apiEndpoint + '/safeguards/bulk', safeguards)
   }
 
+  addSafeguard(safeguard: SafeguardModel) {
+    return this.http.post(this.env.apiEndpoint + '/safeguards', safeguard)
+  }
+
   updateSafeguard(safeguard: SafeguardModel) {
     return this.http.patch(this.env.apiEndpoint + '/safeguards/' + safeguard.id, safeguard)
   }
 
-  deleteSafeguards(safeguardId: number) {
+  deleteSafeguard(safeguardId: number) {
     return this.http.delete(this.env.apiEndpoint + '/safeguards/' + safeguardId)
   }
 }

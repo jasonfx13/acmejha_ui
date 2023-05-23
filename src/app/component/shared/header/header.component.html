@@ -1,19 +1,14 @@
 <header>
   <nav id="navbar_main" class="mobile-offcanvas navbar navbar-expand-lg">
     <div class="nav-logo-container d-flex align-items-center justify-content-start">
-        <span class="header-menu d-lg-none d-xl-none">
-          <span (click)="toggleSideNav()" class="icon-responsive-nav menu-icon"></span>
-        </span>
+
       <a routerLink="/" class="navbar-brand">
-<!--        <img class="logo" src="./assets/images/jfx_logo-h.svg" alt="">-->
-        Acme Widgets
+        <img class="logo" src="./assets/acme-logo.svg" alt="" style="max-width: 180px; height: auto; width: 100%;">
+<!--        Acme Widgets-->
       </a>
     </div>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">
-        <li [class]="'nav-item '" [ngClass]="{'active': url == '/'}">
-          <a class="nav-link text-light" routerLink="/">Home</a>
-        </li>
 
       </ul>
     </div>

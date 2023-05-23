@@ -75,13 +75,13 @@
             </div>
 
 
-            <button type="submit" class="btn btn-primary">Next</button>
+            <button type="submit" class="btn btn-primary">Save</button>
           </form>
         </div>
       </ng-container>
       <ng-template #showSucessMessage>
         <div class="alert alert-success">
-          Job Created Sucessvully
+          Job {{editMode ? 'Updated' : 'Created'}} Sucessvully
         </div>
         <div class="actions">
           <button class="btn btn-primary" (click)="doClose()">Close</button>

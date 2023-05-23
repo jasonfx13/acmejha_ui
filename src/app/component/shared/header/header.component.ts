@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {NavigationService} from "../../../service/navigation.service";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import { NavigationEnd, Router} from "@angular/router";
 
 
 @Component({

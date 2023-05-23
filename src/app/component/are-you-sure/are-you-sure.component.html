@@ -1,0 +1,22 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-title">{{entity.dialogTitle}}</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="doClose()"
+  ></button>
+</div>
+<div class="modal-body">
+  <p>
+    <strong>Are you sure you want to delete <span class="text-primary">{{entity.label}}. </span></strong>
+    <span *ngIf="entity.dialogTitle == 'Job Deletion'">This will permanently delete {{entity.label}} and all associated steps, hazards, and safeguards.</span>
+    <span *ngIf="entity.dialogTitle == 'Step Deletion'">This will permanently delete {{entity.label}} and all associated hazards, and safeguards.</span>
+    <span *ngIf="entity.dialogTitle == 'Hazard Deletion'">This will permanently delete {{entity.label}} and all associated safeguards.</span>
+  </p>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="doClose()">Cancel</button>
+  <button type="button" class="btn btn-danger" (click)="doYesDelete()">Ok</button>
+</div>

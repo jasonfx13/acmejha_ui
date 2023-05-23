@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../../service/data.service";
 import {NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import {JobFormComponent} from "../../component/job-form/job-form.component";
 import {HazardModel, JobModel, SafeguardModel, StepModel} from "../../model/job.model";
-import {StepsFormComponent} from "../../component/steps-form/steps-form.component";
 import {NgForm} from "@angular/forms";
+import {AreYouSureComponent} from "../../component/are-you-sure/are-you-sure.component";
 
 @Component({
   selector: 'app-home',
@@ -14,6 +14,19 @@ import {NgForm} from "@angular/forms";
 export class HomeComponent implements OnInit {
   jobs: JobModel[] | any[] = [];
   loading = true
+  editMode = false;
+  // showAddStepForm = false;
+  addStepFormInstance = 'addStepFormInstance_'
+  addHazardFormInstance = 'addHazardFormInstance_'
+  addSafeguardFormInstance = 'addSafeguardFormInstance_'
+
+  editStepFormInstance = 'editStepFormInstance_'
+  editHazardFormInstance = 'editHazardFormInstance_'
+  editSafeguardFormInstance = 'editSafeguardFormInstance_'
+
+
+  @ViewChild('safeguardTitle') safeguardTitle: ElementRef | any;
+
   constructor(
     private dataService: DataService,
     private modalService: NgbModal
@@ -33,33 +46,35 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  closeResult = '';
   createNewJob(content: any) {
-    // this.modalService.open(content ).result.then(
-    //   (result) => {
-    //     console.log(result);
-    //     console.log('push new job');
-    //     this.jobs.push(result);
-    //   }
-    //
-    //
-    //   // (reason) => {
-    //   //   console.log(reason);
-    //   //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    //   // },
-    // );
-
     const modalRef = this.modalService.open(JobFormComponent);
     modalRef.componentInstance.doEmitData.subscribe((receivedEntry: any) => {
       console.log(receivedEntry);
       this.jobs.push(receivedEntry);
     })
-    // modalRef.componentInstance.job = null
-
   }
 
+  deleteJob(job: JobModel|any) {
+    const modalRef = this.modalService.open(AreYouSureComponent);
+    modalRef.componentInstance.entity = {dialogTitle: 'Job Deletion', label: job.title}
+    modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
+      if(res) {
+        this.dataService.deleteStep(job.id).subscribe({
+          next: (res) => {
+            console.log(res);
+            // @ts-ignore
+            jobs.splice(jobs.findIndex(j => j.id == job.id), 1)
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        })
+      }
+    })
+  }
+
+  editJobInstance = 'editJobInstance_'
   editJob(job: any) {
-    console.log(job);
     const modalRef = this.modalService.open(JobFormComponent);
 
     modalRef.componentInstance.job = job;
@@ -76,32 +91,89 @@ export class HomeComponent implements OnInit {
     // });
   }
 
-  editStep(step: StepModel) {
-    // const modalRef = this.modalService.open(JobFormComponent);
-    //
-    // modalRef.componentInstance.job = job
-    // modalRef.componentInstance.editMode = true
-    // modalRef.componentInstance.formStep = 'create-steps';
-    console.log(step)
+  editStep(stepId: number) {
+    this.editStepFormInstance = 'editStepFormInstance_' + stepId
   }
 
-  deleteStep(step: StepModel) {
-
-    console.log(step);
+  deleteStep(step: StepModel|any, job: JobModel, i:number) {
+    const modalRef = this.modalService.open(AreYouSureComponent);
+    modalRef.componentInstance.entity = {dialogTitle: 'Step Deletion', label: step.title}
+    modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
+      if(res) {
+        this.dataService.deleteStep(step.id).subscribe({
+          next: (res) => {
+            console.log(res);
+            // @ts-ignore
+            job.steps?.splice(i, 1)
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        })
+      }
+    })
   }
 
-  addSteps(job: JobModel) {
-    const modalRef = this.modalService.open(JobFormComponent);
-
-    modalRef.componentInstance.job = job
-    modalRef.componentInstance.editMode = true
-    modalRef.componentInstance.formStep = 'create-steps';
+  editHazard(hazardId: number) {
+    this.editHazardFormInstance = 'editHazardFormInstance_' + hazardId
   }
-  showAddStepForm = false;
-  toggleAddStepForm(job: JobModel) {
-    this.showAddStepForm = !this.showAddStepForm
+  deleteHazard(hazard: HazardModel|any, step: StepModel, i:number) {
+    const modalRef = this.modalService.open(AreYouSureComponent);
+    modalRef.componentInstance.entity = {dialogTitle: 'Hazard Deletion', label: hazard.title}
+    modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
+      if(res) {
+        this.dataService.deleteHazard(hazard.id).subscribe({
+          next: (res) => {
+            console.log(res);
+            // @ts-ignore
+            step.hazards?.splice(i, 1)
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        })
+      }
+    })
+  }
+  editSafeguard(safeguardId: number) {
+    this.editSafeguardFormInstance = 'editSafeguardFormInstance_' + safeguardId
+  }
+  deleteSafeguard(safeguard: SafeguardModel|any, hazard: HazardModel, i:number) {
+    const modalRef = this.modalService.open(AreYouSureComponent);
+    modalRef.componentInstance.entity = {dialogTitle: 'Safeguard Deletion', label: safeguard.title}
+    modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
+      if(res) {
+        this.dataService.deleteSafeguard(safeguard.id).subscribe({
+          next: (res) => {
+            console.log(res);
+            // @ts-ignore
+            hazard.safeguards?.splice(i, 1)
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        })
+      }
+    })
   }
 
+
+
+  toggleAddStepForm(i: any) {
+    this.addStepFormInstance = 'addStepFormInstance_' + i
+    // this.showAddStepForm = !this.showAddStepForm
+  }
+
+  toggleAddHazardsForm(i: any) {
+    // @ts-ignore
+    this.addHazardFormInstance = 'addHazardFormInstance_' + i;
+
+    console.log(this.addHazardFormInstance);
+  }
+
+  toggleSafeguardForm(i: any) {
+    this.addSafeguardFormInstance = 'addSafeguardFormInstance_' + i
+  }
 
   errors: any[] = []
   doAddNewJob(event: any) {
@@ -111,7 +183,7 @@ export class HomeComponent implements OnInit {
 
   doAddStep(form: NgForm, job:JobModel|any) {
     console.log(form);
-    this.loading = true;
+    // this.loading = true;
     if(form.value.title == '') {
       this.errors.push({message: 'Title is required'})
       return
@@ -141,6 +213,143 @@ export class HomeComponent implements OnInit {
         console.log(err)
         this.loading = false
       }
+    })
+    this.addStepFormInstance = 'addStepFormInstance_'
+  }
+
+
+  doAddHazard(form: NgForm, step:StepModel|any) {
+    console.log(form);
+    // this.loading = true;
+    if(form.value.hazardTitle == '') {
+      this.errors.push({message: 'Title is required'})
+      return
+    }
+
+    console.log(form.value.hazardTitle);
+
+    let data = {
+      title: form.value.hazardTitle,
+      stepId: step.id
+    }
+    console.log(data);
+
+    this.dataService.addHazard(data).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        if(step.hazards) {
+          step.hazards.push(res.data);
+        } else {
+          step.hazards = []
+          step.hazards.push(res.data);
+        }
+
+        this.loading = false
+      },
+      error: (err) => {
+        console.log(err)
+        this.loading = false
+      }
+    })
+  }
+
+  doAddSafeguard(form:NgForm, hazard: HazardModel|any) {
+    console.log(form);
+    // this.loading = true;
+    if(form.value.safeguardTitle == '') {
+      this.errors.push({message: 'Title is required'})
+      return
+    }
+
+    console.log(form.value.hazardTitle);
+
+    let data = {
+      title: form.value.safeguardTitle,
+      hazardId: hazard.id
+    }
+    console.log(data);
+
+    this.dataService.addSafeguard(data).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        if(hazard.safeguards) {
+          hazard.safeguards.push(res.data);
+        } else {
+          hazard.safeguards = []
+          hazard.safeguards.push(res.data);
+        }
+
+        this.loading = false
+      },
+      error: (err) => {
+        console.log(err)
+        this.loading = false
+      }
+    })
+
+    this.safeguardTitle.nativeElement.value = ''
+  }
+
+
+  doUpdateStep(form: NgForm, job: JobModel, stepId: number, i:number) {
+    let data: any = {
+      id: stepId,
+      title: form.value.editSafeguardTitle,
+      jobId: job.id
+    }
+
+    // @ts-ignore
+    job.steps[i].title = form.value.editSafeguardTitle
+
+    this.dataService.updateSteps(data).subscribe({
+      next: (res) => {
+        this.editStepFormInstance = 'editStepFormInstance_';
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+
+  doUpdateHazard(form: NgForm, step: StepModel, hazardId: number, i:number) {
+    let data: any = {
+      id: hazardId,
+      title: form.value.editHazardTitle,
+      stepId: step.id
+    }
+
+    // @ts-ignore
+    step.hazards[i].title = form.value.editHazardTitle
+
+    this.dataService.updateHazard(data).subscribe({
+      next: (res) => {
+        this.editHazardFormInstance = 'editHazardFormInstance_';
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  doUpdateSafeguard(form: NgForm, hazard: HazardModel, safeguardId: number, i: number) {
+    let data: any = {
+      id: safeguardId,
+      title: form.value.editSafeguardTitle,
+      hazardId: hazard.id
+    }
+
+    // @ts-ignore
+    hazard.safeguards[i].title = form.value.editSafeguardTitle
+
+    this.dataService.updateSafeguard(data).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.editSafeguardFormInstance = 'editSafeguardFormInstance_'
+      },
+      error: (err) => {
+        console.log(err);
+    }
     })
   }
 
