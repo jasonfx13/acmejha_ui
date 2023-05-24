@@ -31,6 +31,7 @@ ul {
       border: 1px dashed #ccc;
     }
   }
+
 }
 button {
   .icon-addicon {
@@ -59,4 +60,9 @@ table {
       }
     }
   }
+}
+a.add-fields {
+  cursor: pointer;
+  font-size: .8rem;
+  color: #777;
 }

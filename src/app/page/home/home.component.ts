@@ -119,12 +119,23 @@ export class HomeComponent implements OnInit {
   editHazard(hazardId: number) {
     this.editHazardFormInstance = 'editHazardFormInstance_' + hazardId
   }
-  addFields(job: JobModel, field:string) {
+  addFields(step: StepModel, field:string) {
     let modalRef = this.modalService.open(HazardsFormComponent);
 
-    modalRef.componentInstance.job = job;
+    modalRef.componentInstance.step = step;
     modalRef.componentInstance.field = field;
 
+    modalRef.componentInstance.dataEmitter.subscribe((res:any) => {
+      console.log(res);
+
+      let returnData:any[] = res;
+      if(returnData.length > 0) {
+        returnData.forEach((d) => {
+          // @ts-ignore
+          step[field].push({title:d.title, stepId:d.step_id})
+        })
+      }
+    })
 
   }
 
@@ -149,7 +160,7 @@ export class HomeComponent implements OnInit {
   editSafeguard(safeguardId: number) {
     this.editSafeguardFormInstance = 'editSafeguardFormInstance_' + safeguardId
   }
-  deleteSafeguard(safeguard: SafeguardModel|any, hazard: HazardModel, i:number) {
+  deleteSafeguard(safeguard: SafeguardModel|any, step: StepModel, i:number) {
     const modalRef = this.modalService.open(AreYouSureComponent);
     modalRef.componentInstance.entity = {dialogTitle: 'Safeguard Deletion', label: safeguard.title}
     modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
@@ -157,7 +168,7 @@ export class HomeComponent implements OnInit {
         this.dataService.deleteSafeguard(safeguard.id).subscribe({
           next: (res) => {
             // @ts-ignore
-            hazard.safeguards?.splice(i, 1)
+            step.safeguards?.splice(i, 1)
           },
           error: (err) => {
             this.handleErrors(false, err);
@@ -326,15 +337,15 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  doUpdateSafeguard(form: NgForm, hazard: HazardModel, safeguardId: number, i: number) {
+  doUpdateSafeguard(form: NgForm, step: StepModel, safeguardId: number, i: number) {
     let data: any = {
       id: safeguardId,
       title: form.value.editSafeguardTitle,
-      hazardId: hazard.id
+      stepId: step.id
     }
 
     // @ts-ignore
-    hazard.safeguards[i].title = form.value.editSafeguardTitle
+    step.safeguards[i].title = form.value.editSafeguardTitle
 
     this.dataService.updateSafeguard(data).subscribe({
       next: (res) => {

@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title" id="modal-basic-title">Create Hazards</h4>
+  <h4 class="modal-title" id="modal-basic-title">Create {{this.field | titlecase}}</h4>
   <button ngbAutofocus type="button" class="close" aria-label="Close" (click)="doClose()">
     <span aria-hidden="true">×</span>
   </button>
@@ -9,38 +9,45 @@
 
 
     <ng-container *ngIf="initialized; else loading">
-
-    </ng-container>
-    <form [formGroup]="hazardsForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <div formArrayName="hazards">
-          <div *ngFor="let step of hazards.controls; let i=index">
-            <!-- The repeated alias template -->
-            <label
-              for="title-{{i}}">title:
-            </label>
-            <input
-              class="form-control"
-              id="title-{{i}}"
-              type="text"
-              [formControlName]="i"
-            >
-          </div>
-
-          <div class="add-hazard-placeholder">
-            <button class="btn btn-light" type="button" (click)="addHazard()">+ Add Hazard</button>
-          </div>
-
+      <ng-container *ngIf="successMessage != ''">
+        <div class="alert alert-success">
+          {{successMessage}}
         </div>
-      </div>
+      </ng-container>
+      <form [formGroup]="hazardsAndSafeguardsForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <div formArrayName="formControlsArray">
+            <div style="margin-bottom: 1rem;" *ngFor="let step of controls.controls; let i=index">
+              <!-- The repeated alias template -->
+<!--              <label-->
+<!--                for="title-{{i}}">Title:-->
+<!--              </label>-->
+              <input
+                (focus)="successMessage = ''"
+                class="form-control"
+                [placeholder]="'Enter ' + (field|slice:0:-1) + ' title'"
+                id="title-{{i}}"
+                type="text"
+                [formControlName]="i"
+              >
+            </div>
+
+            <div class="add-hazard-placeholder">
+              <button class="btn btn-light" type="button" (click)="addStep()">+ Add {{this.field |slice:0:-1 | titlecase}}</button>
+            </div>
+
+          </div>
+        </div>
 
 
-      <div class="actions">
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <button class="btn btn-primary" (click)="clearForm()">Clear</button>
-      </div>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Submit</button>
+          <button class="btn btn-primary" (click)="clearForm()">Clear</button>
+        </div>
 
-    </form>
+      </form>
+    </ng-container>
+
   </div>
 </div>
 <ng-template #loading>

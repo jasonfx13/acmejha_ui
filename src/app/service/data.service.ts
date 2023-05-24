@@ -21,6 +21,10 @@ export class DataService {
 
   }
 
+  bulkAdd(data:any, field:string) {
+    return this.http.post(this.env.apiEndpoint + '/' + field + '/bulk', data);
+  }
+
   updateJob(job: JobModel) {
     console.log(job)
     return this.http.patch(this.env.apiEndpoint + '/jobs/' + job.id, job);
