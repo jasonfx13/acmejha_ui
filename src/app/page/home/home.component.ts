@@ -18,13 +18,9 @@ export class HomeComponent implements OnInit {
   editMode = false;
   errors: any[] = [];
   addStepFormInstance = 'addStepFormInstance_'
-  addHazardFormInstance = 'addHazardFormInstance_'
-  addSafeguardFormInstance = 'addSafeguardFormInstance_'
-
   editStepFormInstance = 'editStepFormInstance_'
   editHazardFormInstance = 'editHazardFormInstance_'
   editSafeguardFormInstance = 'editSafeguardFormInstance_'
-
   @ViewChild('stepTitle') stepTitle: ElementRef | any;
   @ViewChild('hazardTitle') hazardTitle: ElementRef | any;
   @ViewChild('safeguardTitle') safeguardTitle: ElementRef | any;
@@ -38,15 +34,11 @@ export class HomeComponent implements OnInit {
     this.dataService.getJobs(true).subscribe({
       next: (res: any) => {
         this.jobs = res.data
-        console.log(this.jobs);
         this.loading = false
       },
       error: (err) => {
         this.handleErrors(false, err)
         this.loading = false
-      },
-      complete: () => {
-
       }
     })
   }
@@ -79,18 +71,12 @@ export class HomeComponent implements OnInit {
     this.editJobInstance = 'editJobInstance_'
   }
   editJobInstance = 'editJobInstance_'
-  editTasks(jobId:number) {
-    this.editJobInstance = (this.editJobInstance == 'editJobInstance_' ? 'editJobInstance_' + jobId :'editJobInstance_')
 
-  }
   editJob(job: any) {
     const modalRef = this.modalService.open(JobFormComponent);
-
     modalRef.componentInstance.job = job;
     modalRef.componentInstance.editMode = true;
-
-    modalRef.componentInstance.doEmitData.subscribe((receivedEntry: any) => {
-      console.log(receivedEntry);
+    modalRef.componentInstance.doEmitData.subscribe(() => {
     })
   }
 
@@ -126,8 +112,6 @@ export class HomeComponent implements OnInit {
     modalRef.componentInstance.field = field;
 
     modalRef.componentInstance.dataEmitter.subscribe((res:any) => {
-      console.log(res);
-
       let returnData:any[] = res;
       if(returnData.length > 0) {
         returnData.forEach((d) => {
@@ -136,9 +120,7 @@ export class HomeComponent implements OnInit {
         })
       }
     })
-
   }
-
 
   deleteHazard(hazard: HazardModel|any, step: StepModel, i:number) {
     const modalRef = this.modalService.open(AreYouSureComponent);
@@ -178,20 +160,9 @@ export class HomeComponent implements OnInit {
     })
   }
 
-
-
   toggleAddStepForm(i: any) {
     this.addStepFormInstance = 'addStepFormInstance_' + i
     // this.showAddStepForm = !this.showAddStepForm
-  }
-
-  toggleAddHazardsForm(i: any) {
-    // @ts-ignore
-    this.addHazardFormInstance = 'addHazardFormInstance_' + i;
-  }
-
-  toggleSafeguardForm(i: any) {
-    this.addSafeguardFormInstance = 'addSafeguardFormInstance_' + i
   }
 
   doAddNewJob(event: any) {
@@ -199,7 +170,6 @@ export class HomeComponent implements OnInit {
   }
 
   doAddStep(form: NgForm, job:JobModel|any) {
-    // this.loading = true;
     if(form.value.title == '') {
       this.errors.push({message: 'Title is required'})
       return
@@ -227,86 +197,18 @@ export class HomeComponent implements OnInit {
       }
     })
     this.stepTitle.nativeElement.value = '';
-    // this.addStepFormInstance = 'addStepFormInstance_'
   }
-
-
-  doAddHazard(form: NgForm, step:StepModel|any) {
-    // this.loading = true;
-    if(form.value.hazardTitle == '') {
-      this.errors.push({message: 'Title is required'})
-      return
-    }
-
-    let data = {
-      title: form.value.hazardTitle,
-      stepId: step.id
-    }
-
-    this.dataService.addHazard(data).subscribe({
-      next: (res: any) => {
-        if(step.hazards) {
-          step.hazards.push(res.data);
-        } else {
-          step.hazards = []
-          step.hazards.push(res.data);
-        }
-
-        this.loading = false
-      },
-      error: (err) => {
-        this.handleErrors(false, err);
-        this.loading = false
-      }
-    })
-    this.hazardTitle.nativeElement.value = ''
-
-  }
-
-  doAddSafeguard(form:NgForm, hazard: HazardModel|any) {
-    // this.loading = true;
-    if(form.value.safeguardTitle == '') {
-      this.errors.push({message: 'Title is required'})
-      return
-    }
-
-    let data = {
-      title: form.value.safeguardTitle,
-      hazardId: hazard.id
-    }
-
-    this.dataService.addSafeguard(data).subscribe({
-      next: (res: any) => {
-        if(hazard.safeguards) {
-          hazard.safeguards.push(res.data);
-        } else {
-          hazard.safeguards = []
-          hazard.safeguards.push(res.data);
-        }
-
-        this.loading = false
-      },
-      error: (err) => {
-        this.handleErrors(false, err);
-        this.loading = false
-      }
-    })
-
-    this.safeguardTitle.nativeElement.value = ''
-  }
-
 
   doUpdateStep(form: NgForm, job: JobModel, stepId: number, i:number) {
     let data: any = {
       id: stepId,
-      title: form.value.editSafeguardTitle,
+      title: form.value.editStepTitle,
       jobId: job.id
     }
-
     // @ts-ignore
-    job.steps[i].title = form.value.editSafeguardTitle
+    job.steps[i].title = form.value.editStepTitle
 
-    this.dataService.updateSteps(data).subscribe({
+    this.dataService.updateStep(data).subscribe({
       next: (res) => {
         this.editStepFormInstance = 'editStepFormInstance_';
       },
@@ -315,7 +217,6 @@ export class HomeComponent implements OnInit {
       }
     })
   }
-
 
   doUpdateHazard(form: NgForm, step: StepModel, hazardId: number, i:number) {
     let data: any = {
@@ -358,8 +259,6 @@ export class HomeComponent implements OnInit {
   }
   handleErrors(doClear = false, errors:any) {
     this.errors.push({message: errors.error.message})
-
-    console.log(this.errors);
   }
   errorAlertInstance = 'errorAlertInstance_'
   clearErrors(i:any, clearAll = false) {

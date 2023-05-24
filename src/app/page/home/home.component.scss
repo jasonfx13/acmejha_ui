@@ -68,3 +68,18 @@ a.add-fields {
   font-size: .8rem;
   color: #777;
 }
+.scroll-container {
+  z-index: 1;
+  table {
+    //min-width: 800px;
+    @media(max-width: 600px) {
+      td {
+        max-width: 200px;
+      }
+    }
+  }
+  max-width: 100%;
+  overflow-x: scroll;
+  //overflow: hidden;
+
+}

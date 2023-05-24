@@ -17,7 +17,7 @@ export class AreYouSureComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  doYesDelete() {
+  doYes() {
     this.doDeleteEmitter.emit(true);
     this.doClose();
   }

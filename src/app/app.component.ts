@@ -9,11 +9,7 @@ import {DataService} from "./service/data.service";
 export class AppComponent {
   title = 'acmejha_ui';
 
-
-  constructor(
-    private dataService: DataService
-  ) {
-  }
+  constructor() {}
 
   ngOnInit() {
 

@@ -23,7 +23,6 @@ export class HeaderComponent implements OnInit {
       next: (event) => {
         if(event instanceof NavigationEnd) {
           this.url = event.url;
-          console.log(event.url)
         }
       }
     })

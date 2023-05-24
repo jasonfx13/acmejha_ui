@@ -16,12 +16,13 @@ export class JobFormComponent implements OnInit {
   job: JobModel | any;
   editMode = false
   errors: any[] = [];
-
+  sucess = false;
   jobTitle = '';
   jobDescription = '';
   createdBy = ''
   @Input() formStep = 'create-job' // create-job, create-steps, create-hazards, create-safeguards
   processingForm = false;
+
   constructor(
     private dataService: DataService,
     private modalService: NgbModal
@@ -34,14 +35,9 @@ export class JobFormComponent implements OnInit {
       this.createdBy = this.job.createdBy
     }
   }
-  doSetProcessing(event: boolean) {
-    console.log(event);
-    this.processingForm = event
-  }
-  sucess = false;
+
   onSubmit(form: NgForm) {
     this.processingForm = true
-
 
     let data: any = {
       title: form.value.title,
@@ -61,12 +57,10 @@ export class JobFormComponent implements OnInit {
       return
     }
 
-    console.log(data);
     if(this.editMode) {
       data.id = this.job.id
       this.dataService.updateJob(data).subscribe({
         next: (res: any) => {
-          console.log(res)
           this.job.title = data.title
           this.job.description = data.description
           this.job.createdBy = data.createdBy
@@ -75,14 +69,12 @@ export class JobFormComponent implements OnInit {
           this.processingForm = false;
         },
         error: (err) => {
-          console.log(err);
           this.processingForm = false;
         }
       })
     } else {
       this.dataService.addJob(data).subscribe({
         next: (res: any) => {
-          console.log(res)
           this.job = res.data
           this.doEmitData.emit(this.job)
           this.sucess = true;
@@ -94,10 +86,6 @@ export class JobFormComponent implements OnInit {
         }
       })
     }
-
-
-
-
   }
   doClose() {
     this.modalService.dismissAll();

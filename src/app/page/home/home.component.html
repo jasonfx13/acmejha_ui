@@ -1,6 +1,5 @@
 <div class="container-fluid ">
-  <div class="container py-3 px-4 py-4 px-sm-1 px-md-3 px-lg-3" style="min-height: 80vh;">
-
+  <div class="container-fluid py-3 px-1 py-4 px-sm-1 px-md-3 px-lg-1" style="min-height: 80vh;">
     <ng-container *ngIf="!loading; else isLoading">
       <ng-container *ngIf="errors.length > 0">
         <ng-container *ngFor="let error of errors; let i = index">
@@ -17,29 +16,43 @@
               <p class="description" *ngIf="job.description">
                 {{job.description}}
               </p>
-
-
               <ng-container *ngIf="job.steps && job.steps.length > 0">
-                <table  class="table" style="margin-bottom: 20px;">
-                  <thead>
-                  <tr>
-                    <th>Tasks/Steps</th>
-                    <th>Hazards</th>
-                    <th>Safeguards</th>
-                  </tr>
+                <div class="scroll-container">
+                  <table  class="table" style="margin-bottom: 20px;">
+                    <thead>
+                    <tr>
+                      <th>Tasks/Steps</th>
+                      <th>Hazards</th>
+                      <th>Safeguards</th>
+                    </tr>
 
-                  </thead>
-                  <tbody>
+                    </thead>
+                    <tbody>
                     <tr *ngFor="let step of job.steps; let stepIndex = index">
                       <td>
-                        {{step.title}}
+                        <ng-container *ngIf="editStepFormInstance != 'editStepFormInstance_' + step.id">
+                          {{step.title}}
+                          <span ngbDropdown container="body"><span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_safeguard_' + step.id" [id]="'step_dropdown_' + step.id" ngbDropdownToggle></span>
+                            <div ngbDropdownMenu [attr.aria-labelledby]="'step_dropdown_' + step.id">
+                              <button ngbDropdownItem (click)="editStep(step.id)">Edit Step {{step.id}}</button>
+                              <button ngbDropdownItem (click)="deleteStep(step, job, stepIndex)">Delete Step {{step.id}}</button>
+                            </div>
+                          </span>
+                        </ng-container>
+                        <ng-container *ngIf="editStepFormInstance == 'editStepFormInstance_' + step.id ">
+                          <form (ngSubmit)="doUpdateStep(updateStepForm, job, step.id, stepIndex)" #updateStepForm="ngForm">
+                            <input type="text" name="editStepTitle" [(ngModel)]="step.title">
+                            <button type="submit">Save</button>
+                            <button (click)="editStepFormInstance = 'editStepFormInstance_'">X</button>
+                          </form>
+                        </ng-container>
                       </td>
                       <td>
                         <ul *ngIf="step && step.hazards && step.hazards.length > 0;">
                           <li *ngFor="let hazard of step.hazards; let hazardIndex = index">
                             <ng-container *ngIf="editHazardFormInstance != 'editHazardFormInstance_' +hazard.id">
                               {{hazard.title}}
-                              <span ngbDropdown>
+                              <span ngbDropdown container="body">
                               <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_hazard_' + hazard.id" [id]="'hazard_dropdown_' + hazard.id" ngbDropdownToggle></span>
                                 <div ngbDropdownMenu [attr.aria-labelledby]="'hazard_dropdown_' + hazard.id">
                                   <button ngbDropdownItem (click)="editHazard(hazard.id)">Edit Hazard {{hazard.id}}</button>
@@ -63,7 +76,7 @@
                           <li *ngFor="let safeguard of step.safeguards; let safeguardIndex = index">
                             <ng-container *ngIf="editSafeguardFormInstance != 'editSafeguardFormInstance_' + safeguard.id">
                               {{safeguard.title}}
-                              <span ngbDropdown><span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_safeguard_' + safeguard.id" [id]="'safeguard_dropdown_' + safeguard.id" ngbDropdownToggle></span>
+                              <span ngbDropdown container="body"><span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_safeguard_' + safeguard.id" [id]="'safeguard_dropdown_' + safeguard.id" ngbDropdownToggle></span>
                                   <div ngbDropdownMenu [attr.aria-labelledby]="'safeguard_dropdown_' + safeguard.id">
                                     <button ngbDropdownItem (click)="editSafeguard(safeguard.id)">Edit Safeguard {{safeguard.id}}</button>
                                     <button ngbDropdownItem (click)="deleteSafeguard(safeguard, step, safeguardIndex)">Delete Safeguard {{safeguard.id}}</button>
@@ -81,11 +94,11 @@
                         </ul>
                         <a class="add-fields" (click)="addFields(step, 'safeguards')">Add Safeguards</a>
                       </td>
-
                     </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-                  </tbody>
-                </table>
               </ng-container>
               <!-- Add Step-->
               <ng-container *ngIf="addStepFormInstance == 'addStepFormInstance_'">
@@ -111,12 +124,11 @@
               <div class="actions" style="margin-top: 1rem;">
                 <button class="btn btn-primary" (click)="editJob(job)">Edit Job Details</button>
                 <button class="btn btn-danger" (click)="deleteJob(job)">Delete Job</button>
-
               </div>
             </ng-template>
           </ngb-panel>
         </ngb-accordion>
-        <div class="container" style="margin: 1rem 0;">
+        <div class="container-fluid" style="margin: 1rem 0;">
           <div class="form-placeholder">
             <button class="btn btn-light" (click)="createNewJob(newJobForm)">Add New Job</button>
           </div>

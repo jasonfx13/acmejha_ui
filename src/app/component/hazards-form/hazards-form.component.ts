@@ -23,47 +23,29 @@ export class HazardsFormComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private dataService: DataService,
-
   ) {
   }
   get controls() {
     return this.hazardsAndSafeguardsForm.get('formControlsArray') as unknown as FormArray;
-
   }
 
   addStep() {
     this.controls.push(this.fb.control(''));
   }
   clearForm() {
-
     this.hazardsAndSafeguardsForm = this.fb.group({
       formControlsArray: this.fb.array([])
     })
     this.controls.push(this.fb.control(''));
   }
 
-
   ngOnInit() {
-    console.log(this.field);
-    console.log(this.step);
     this.controls.push(this.fb.control(''));
     this.initialized = true;
-    // if(this.job && this.job.steps && this.job.steps.length > 0) {
-    //
-    //   this.job.steps.forEach((step: any) => {
-    //     this.hazards.push(this.fb.control(step.title));
-    //   })
-    //   this.hazards.push(this.fb.control(''));
-    //   this.initialized = true;
-    // } else {
-    //   this.hazards.push(this.fb.control(''));
-    //   this.initialized = true;
-    // }
   }
 
   onSubmit() {
     this.initialized = false;
-    console.log(this.controls.value)
     let formData = this.controls.value
     let data: any[] = [];
     if(formData.length > 0) {
@@ -85,9 +67,6 @@ export class HazardsFormComponent implements OnInit {
         this.initialized = true
       }
     })
-
-
-    console.log(data);
   }
 
   doClose() {
