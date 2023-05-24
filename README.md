@@ -5,10 +5,10 @@ This project is running on <a href="https://www.npmjs.com/package/@angular/cli/v
 <ul>
 <li>Be sure <a href="https://nodejs.org/en">NodeJS</a> is installed</li>
 <li>Install the <a href="https://angular.io/cli">Angular CLI</a></li>
-<li>Download or clone projec to a local folder</li>
+<li>Download or clone project to a local folder</li>
 <li>Open a command line interface inside project folder</li>
-<li>run npm install</li>
-<li>run ng serve</li>
+<li>run 'npm install'</li>
+<li>run 'ng serve'</li>
 </ul>
 
 Project should be up and running at `http://localhost:4200/`
