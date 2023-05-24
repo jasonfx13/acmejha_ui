@@ -23,6 +23,15 @@ ul {
   justify-content: center;
   align-items: center;
   margin: 1rem 0;
+  &.form-placeholder-td {
+    padding: .4rem;
+    //font-size: .8rem;
+    button {
+      font-size: .8rem;
+      border: 1px dashed #ccc;
+    }
+  }
+
 }
 button {
   .icon-addicon {
@@ -42,4 +51,20 @@ form {
   .actions {
     margin: .4rem 0;
   }
+}
+table {
+  tbody {
+    tr {
+      td {
+        //border-bottom: thin solid #ededed;
+        min-width: 200px;
+        font-size: .9rem;
+      }
+    }
+  }
+}
+a.add-fields {
+  cursor: pointer;
+  font-size: .8rem;
+  color: #777;
 }
