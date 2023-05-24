@@ -1,6 +1,6 @@
 # AcmejhaUi
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.7.
+This project is running on <a href="https://www.npmjs.com/package/@angular/cli/v/14.2.11" target="_blank">Angular 14.2.11</a>
 
 <ul>
 <li>Be sure <a href="https://nodejs.org/en">NodeJS</a> is installed</li>
