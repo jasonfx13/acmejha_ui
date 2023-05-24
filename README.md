@@ -2,9 +2,18 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.7.
 
+<ul>
+<li>Be sure <a href="https://nodejs.org/en">NodeJS</a> is installed</li>
+<li>Install the <a href="https://angular.io/cli">Angular CLI</a></li>
+</ul>
+
+Be sure to edit the `apiEndpoint` value in `src/environments/environement.ts` if it differs from the default endpoint.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+Run `ng serve --live-reload false` to disable automatic reload when you change any of the source files.
 
 ## Code scaffolding
 
