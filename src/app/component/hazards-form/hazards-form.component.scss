@@ -8,3 +8,8 @@
   border-radius: 10px;
   margin: 1rem 0;
 }
+.actions {
+  button:not(:last-of-type) {
+    margin-right: .5rem;
+  }
+}

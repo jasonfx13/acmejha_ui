@@ -20,7 +20,7 @@
 
 
               <ng-container *ngIf="job.steps && job.steps.length > 0">
-                <table  class="table" style="margin-bottom: 100px;">
+                <table  class="table" style="margin-bottom: 20px;">
                   <thead>
                   <tr>
                     <th>Tasks/Steps</th>
@@ -59,7 +59,7 @@
                         <a class="add-fields" (click)="addFields(step, 'hazards')">Add Hazards</a>
                       </td>
                       <td>
-                        <ul>
+                        <ul *ngIf="step && step.safeguards && step.safeguards.length > 0;">
                           <li *ngFor="let safeguard of step.safeguards; let safeguardIndex = index">
                             <ng-container *ngIf="editSafeguardFormInstance != 'editSafeguardFormInstance_' + safeguard.id">
                               {{safeguard.title}}
@@ -81,152 +81,35 @@
                         </ul>
                         <a class="add-fields" (click)="addFields(step, 'safeguards')">Add Safeguards</a>
                       </td>
+
                     </tr>
+
                   </tbody>
                 </table>
               </ng-container>
-
-              <!-- Add Step -->
+              <!-- Add Step-->
               <ng-container *ngIf="addStepFormInstance == 'addStepFormInstance_'">
                 <div class="form-placeholder">
                   <button class="btn btn-light" (click)="toggleAddStepForm(jobIndex)"><span class="icon-addicon"></span> Add Step</button>
                 </div>
 
               </ng-container>
+              <ng-container *ngIf="addStepFormInstance == 'addStepFormInstance_' + jobIndex">
+                <form (ngSubmit)="doAddStep(stepForm, job)" #stepForm="ngForm">
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" #stepTitle ngModel class="form-control">
+                  </div>
+                  <div class="actions">
+                    <button class="btn btn-light">Add</button>
+                    <button class="btn btn-light" (click)="addStepFormInstance = 'addStepFormInstance_'; false">Cancel</button>
+                  </div>
+                </form>
+              </ng-container>
 
 
-
-
-
-              <h6>Tasks/Steps</h6>
-<!--              <ng-container *ngIf="job.steps && job.steps.length > 0">-->
-<!--                <ul>-->
-<!--                  <li *ngFor="let step of job.steps; let i = index"  >-->
-<!--                    <ng-container *ngIf="editStepFormInstance != 'editStepFormInstance_' +step.id">-->
-<!--                      {{step.title}}-->
-<!--                      <span ngbDropdown><span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_step_' + step.id" [id]="'step_dropdown_' + step.id" ngbDropdownToggle></span>-->
-<!--                      <div ngbDropdownMenu [attr.aria-labelledby]="'step_dropdown_' + step.id">-->
-<!--                        <button ngbDropdownItem (click)="editStep(step.id)">Edit Step {{step.id}}</button>-->
-<!--                        <button ngbDropdownItem (click)="deleteStep(step, job, i)">Delete Step {{step.id}}</button>-->
-<!--                      </div>-->
-<!--                    </span>-->
-<!--                    </ng-container>-->
-<!--                    <ng-container *ngIf="editStepFormInstance == 'editStepFormInstance_' +step.id">-->
-<!--                      <form (ngSubmit)="doUpdateStep(updateStepForm, job, step.id, i)" #updateStepForm="ngForm">-->
-<!--                        <input type="text" name="editSafeguardTitle" [(ngModel)]="step.title">-->
-<!--                        <button type="submit">Save</button>-->
-<!--                        <button (click)="editStepFormInstance = 'editStepFormInstance_'">X</button>-->
-<!--                      </form>-->
-<!--                    </ng-container>-->
-
-<!--                    <h6>Hazards for {{step.title}}</h6>-->
-<!--                    <ng-container *ngIf="step && step.hazards &&  step.hazards.length > 0">-->
-<!--                      <ul>-->
-<!--                        <li *ngFor="let hazard of step.hazards; let i = index">-->
-<!--                          <ng-container *ngIf="editHazardFormInstance != 'editHazardFormInstance_' +hazard.id">-->
-<!--                            {{hazard.title}}-->
-<!--                            <span ngbDropdown>-->
-<!--                            <span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_hazard_' + hazard.id" [id]="'hazard_dropdown_' + hazard.id" ngbDropdownToggle></span>-->
-<!--                             <div ngbDropdownMenu [attr.aria-labelledby]="'hazard_dropdown_' + hazard.id">-->
-<!--                              <button ngbDropdownItem (click)="editHazard(hazard.id)">Edit Hazard {{hazard.id}}</button>-->
-<!--                              <button ngbDropdownItem (click)="deleteHazard(hazard, step, i)">Delete Hazard {{hazard.id}}</button>-->
-<!--                            </div>-->
-<!--                          </span>-->
-<!--                          </ng-container>-->
-
-<!--                          <ng-container *ngIf="editHazardFormInstance == 'editHazardFormInstance_' +hazard.id">-->
-<!--                            <form (ngSubmit)="doUpdateHazard(updateHazardForm, step, hazard.id, i)" #updateHazardForm="ngForm">-->
-<!--                              <input type="text" name="editHazardTitle" [(ngModel)]="hazard.title">-->
-<!--                              <button type="submit">Save</button>-->
-<!--                              <button (click)="editStepFormInstance = 'editHazardFormInstance_'">X</button>-->
-<!--                            </form>-->
-<!--                          </ng-container>-->
-<!--                          <h6>Safeguards for {{hazard.title}}</h6>-->
-<!--                          <ng-container  *ngIf="hazard.safeguards.length > 0">-->
-<!--                            <ul>-->
-<!--                              <li *ngFor="let safeguard of hazard.safeguards; let i = index">-->
-<!--                                <ng-container *ngIf="editSafeguardFormInstance != 'editSafeguardFormInstance_' + safeguard.id">-->
-<!--                                  {{safeguard.title}}-->
-<!--                                  <span ngbDropdown><span [class]="'icon-dots-3 ' + 'utility_menu utility_menu_safeguard_' + safeguard.id" [id]="'safeguard_dropdown_' + safeguard.id" ngbDropdownToggle></span>-->
-<!--                                  <div ngbDropdownMenu [attr.aria-labelledby]="'safeguard_dropdown_' + safeguard.id">-->
-<!--                                    <button ngbDropdownItem (click)="editSafeguard(safeguard.id)">Edit Safeguard {{safeguard.id}}</button>-->
-<!--                                    <button ngbDropdownItem (click)="deleteSafeguard(safeguard, hazard, i)">Delete Safeguard {{safeguard.id}}</button>-->
-<!--                                  </div>-->
-<!--                                </span>-->
-<!--                                </ng-container>-->
-<!--                                <ng-container *ngIf="editSafeguardFormInstance == 'editSafeguardFormInstance_' + safeguard.id ">-->
-<!--                                  <form (ngSubmit)="doUpdateSafeguard(updateSafeguardForm, hazard, safeguard.id, i)" #updateSafeguardForm="ngForm">-->
-<!--                                    <input type="text" name="editSafeguardTitle" [(ngModel)]="safeguard.title">-->
-<!--                                    <button type="submit">Save</button>-->
-<!--                                    <button (click)="editSafeguardFormInstance = 'editSafeguardFormInstance_'">X</button>-->
-<!--                                  </form>-->
-<!--                                </ng-container>-->
-
-<!--                              </li>-->
-<!--                            </ul>-->
-<!--                          </ng-container>-->
-
-<!--                          &lt;!&ndash; Add Safeguard &ndash;&gt;-->
-<!--                          <ng-container *ngIf="addSafeguardFormInstance == 'addSafeguardFormInstance_' &&  this.editJobInstance == 'editJobInstance_' + job.id">-->
-<!--                            <div class="form-placeholder">-->
-<!--                              <button class="btn btn-light" (click)="toggleSafeguardForm(hazard.id)"><span class="icon-addicon"></span> Add Safeguard</button>-->
-<!--                            </div>-->
-<!--                          </ng-container>-->
-<!--                          <ng-container *ngIf="addSafeguardFormInstance == 'addSafeguardFormInstance_' + hazard.id">-->
-<!--                            <form (ngSubmit)="doAddSafeguard(safeguardForm, hazard)" #safeguardForm="ngForm">-->
-<!--                              <div class="form-group">-->
-<!--                                <label for="hazardTitle">Title</label>-->
-<!--                                <input type="text" id="safeguardTitle" name="safeguardTitle" ngModel #safeguardTitle class="form-control">-->
-<!--                              </div>-->
-<!--                              <div class="actions">-->
-<!--                                <button type="submit" class="btn btn-light">Add</button>-->
-<!--                                <button class="btn btn-light" (click)="safeguardTitle.value = ''; addSafeguardFormInstance = 'addSafeguardFormInstance_'; false">Cancel</button>-->
-<!--                              </div>-->
-<!--                            </form>-->
-<!--                          </ng-container>-->
-<!--                        </li>-->
-<!--                      </ul>-->
-
-<!--                    </ng-container>-->
-
-                    <!-- Add Hazard -->
-<!--                    <ng-container *ngIf="addHazardFormInstance == 'addHazardFormInstance_'  && this.editJobInstance == 'editJobInstance_' + job.id || addHazardFormInstance == 'addHazardFormInstance_' && (job.steps && job.steps.hazards && job.steps.hazards.length == 0)">-->
-<!--                      <div class="form-placeholder">-->
-<!--                        <button class="btn btn-light" (click)="toggleAddHazardsForm(step.id)"><span class="icon-addicon"></span> Add Hazard</button>-->
-<!--                      </div>-->
-<!--                    </ng-container>-->
-<!--                    <ng-container *ngIf="addHazardFormInstance == 'addHazardFormInstance_' + step.id">-->
-<!--                      <form (ngSubmit)="doAddHazard(hazardForm, step)" #hazardForm="ngForm">-->
-<!--                        <div class="form-group">-->
-<!--                          <label for="hazardTitle">Title</label>-->
-<!--                          <input type="text" id="hazardTitle" #hazardTitle name="hazardTitle" ngModel class="form-control">-->
-<!--                        </div>-->
-<!--                        <div class="actions">-->
-<!--                          <button class="btn btn-light">Add</button>-->
-<!--                        </div>-->
-<!--                      </form>-->
-<!--                    </ng-container>-->
-<!--                  </li>-->
-<!--                </ul>-->
-<!--              </ng-container>-->
-
-              <!-- Add Step-->
-
-<!--              <ng-container *ngIf="addStepFormInstance == 'addStepFormInstance_' + i">-->
-<!--                <form (ngSubmit)="doAddStep(stepForm, job)" #stepForm="ngForm">-->
-<!--                  <div class="form-group">-->
-<!--                    <label for="title">Title</label>-->
-<!--                    <input type="text" id="title" name="title" #stepTitle ngModel class="form-control">-->
-<!--                  </div>-->
-<!--                  <div class="actions">-->
-<!--                    <button class="btn btn-light">Add</button>-->
-<!--                    <button class="btn btn-light" (click)="addStepFormInstance = 'addStepFormInstance_'; false">Cancel</button>-->
-<!--                  </div>-->
-<!--                </form>-->
-<!--              </ng-container>-->
               <div class="actions" style="margin-top: 1rem;">
-                <button class="btn btn-primary" (click)="editJob(job)">Edit Job</button>
-                <button class="btn btn-primary" (click)="editTasks(job.id)">{{editJobInstance == 'editJobInstance_' ? 'Edit Tasks' : 'Done Editing Tasks'}}</button>
+                <button class="btn btn-primary" (click)="editJob(job)">Edit Job Details</button>
                 <button class="btn btn-danger" (click)="deleteJob(job)">Delete Job</button>
 
               </div>
@@ -234,7 +117,10 @@
           </ngb-panel>
         </ngb-accordion>
         <div class="container" style="margin: 1rem 0;">
-          <button class="btn btn-primary" (click)="createNewJob(newJobForm)">Add New Job</button>
+          <div class="form-placeholder">
+            <button class="btn btn-light" (click)="createNewJob(newJobForm)">Add New Job</button>
+          </div>
+
         </div>
       </ng-container>
 

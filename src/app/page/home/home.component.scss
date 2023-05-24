@@ -56,7 +56,9 @@ table {
   tbody {
     tr {
       td {
-        border-bottom: thin solid #ededed;
+        //border-bottom: thin solid #ededed;
+        min-width: 200px;
+        font-size: .9rem;
       }
     }
   }
