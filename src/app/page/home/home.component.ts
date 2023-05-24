@@ -5,6 +5,7 @@ import {JobFormComponent} from "../../component/job-form/job-form.component";
 import {HazardModel, JobModel, SafeguardModel, StepModel} from "../../model/job.model";
 import {NgForm} from "@angular/forms";
 import {AreYouSureComponent} from "../../component/are-you-sure/are-you-sure.component";
+import {HazardsFormComponent} from "../../component/hazards-form/hazards-form.component";
 
 @Component({
   selector: 'app-home',
@@ -37,6 +38,7 @@ export class HomeComponent implements OnInit {
     this.dataService.getJobs(true).subscribe({
       next: (res: any) => {
         this.jobs = res.data
+        console.log(this.jobs);
         this.loading = false
       },
       error: (err) => {
@@ -117,6 +119,16 @@ export class HomeComponent implements OnInit {
   editHazard(hazardId: number) {
     this.editHazardFormInstance = 'editHazardFormInstance_' + hazardId
   }
+  addFields(job: JobModel, field:string) {
+    let modalRef = this.modalService.open(HazardsFormComponent);
+
+    modalRef.componentInstance.job = job;
+    modalRef.componentInstance.field = field;
+
+
+  }
+
+
   deleteHazard(hazard: HazardModel|any, step: StepModel, i:number) {
     const modalRef = this.modalService.open(AreYouSureComponent);
     modalRef.componentInstance.entity = {dialogTitle: 'Hazard Deletion', label: hazard.title}
