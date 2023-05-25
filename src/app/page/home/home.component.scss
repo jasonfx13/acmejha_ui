@@ -71,14 +71,6 @@ table {
           }
 
         }
-        button:disabled {
-          cursor: not-allowed !important;
-        }
-        &.disabled {
-          span, button {
-            cursor: not-allowed !important;
-          }
-        }
       }
     }
   }
