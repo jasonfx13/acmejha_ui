@@ -5,7 +5,6 @@ import {SharedModule} from "./shared/shared.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HazardsFormComponent } from './hazards-form/hazards-form.component';
 import { AddStepFormComponent } from './add-step-form/add-step-form.component';
-import { SidePanelComponent } from './side-panel/side-panel.component';
 
 
 @NgModule({
@@ -13,11 +12,9 @@ import { SidePanelComponent } from './side-panel/side-panel.component';
     JobFormComponent,
     HazardsFormComponent,
     AddStepFormComponent,
-    SidePanelComponent
   ],
     exports: [
         JobFormComponent,
-        SidePanelComponent,
     ],
   imports: [
     CommonModule,

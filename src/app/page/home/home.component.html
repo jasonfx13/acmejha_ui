@@ -1,11 +1,6 @@
 <div class="container-fluid ">
   <div class="container-fluid py-3 px-1 py-4 px-sm-1 px-md-3 px-lg-1" style="min-height: 80vh;">
     <ng-container *ngIf="!loading; else isLoading">
-
-      <div @easeIn [class]="'side-panel ' + (showSidePanel ? 'show' : 'hidden')" *ngIf="showSidePanel">
-        <app-side-panel [job]="jobToEdit" [editMode]="editMode"></app-side-panel>
-      </div>
-
       <ng-container *ngIf="errors.length > 0">
         <ng-container *ngFor="let error of errors; let i = index">
           <div [id]="'errorAlertInstance_' + i" [class]="'alert alert-danger ' + 'errorAlertInstance_' + i">
@@ -121,7 +116,6 @@
               <div class="actions" style="margin-top: 1rem;">
                 <button class="btn btn-primary" (click)="editJob(job)">Edit Job Details</button>
                 <button class="btn btn-danger" (click)="deleteJob(job)">Delete Job</button>
-                <button class="btn btn-danger" (click)="toggleShowSidePanel(job, true)">Show Side Panel</button>
               </div>
             </ng-template>
           </ngb-panel>

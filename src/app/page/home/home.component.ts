@@ -12,36 +12,7 @@ import {animate, keyframes, style, transition, trigger} from "@angular/animation
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  animations: [
-    trigger('easeIn', [
-      transition('void => *', animate(300, keyframes([
-        style({
-          transform: 'translateX(-300px)',
-          opacity: 0,
-          height: '*'
-        }),
-        style({
-          transform: 'translateX(0)',
-          opacity: 1,
-          height: '*'
-        })
-      ]))),
-      transition('* => void', animate(300, keyframes([
-        style({
-          transform: 'translateX(0)',
-          opacity: 1,
-          height: '*'
-        }),
-        style({
-          transform: 'translateX(-300px)',
-          opacity: 0,
-          height: '*',
-          color: '#FF0000'
-        })
-      ]))),
-    ])
-  ]
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   jobs: JobModel[] | any[] = [];
