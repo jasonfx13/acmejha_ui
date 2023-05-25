@@ -41,7 +41,6 @@
                             </div>
                           </span>
                         </span>
-                          <a  class="add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span> Add step</a>
                         </td>
                         <td>
                           <ul *ngIf="step && step.hazards && step.hazards.length > 0;">
@@ -77,7 +76,7 @@
                   </table>
                 </div>
               </ng-container>
-              <ng-container *ngIf="job.steps.length == 0">
+              <ng-container>
                 <div class="form-placeholder">
                   <button class="btn btn-light btn-sm add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span> Add Step</button>
                 </div>
