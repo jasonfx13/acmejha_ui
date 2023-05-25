@@ -29,7 +29,6 @@ export class JobFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.editMode);
     if(this.job) {
       this.jobTitle = this.job.title
       this.jobDescription = this.job.description
@@ -91,5 +90,4 @@ export class JobFormComponent implements OnInit {
   doClose() {
     this.modalService.dismissAll();
   }
-
 }

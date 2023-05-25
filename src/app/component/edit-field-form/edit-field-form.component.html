@@ -1,0 +1,38 @@
+<div class="modal-header">
+
+  <h4 class="modal-title" id="modal-title">Edit {{this.field | titlecase | slice:0:-1}}</h4>
+
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="doClose()"
+  ></button>
+</div>
+<div class="modal-body">
+  <ng-container *ngIf="loaded; else loading">
+    <ng-container *ngIf="errors.length > 0">
+      <ng-container *ngFor="let error of errors; let i = index">
+        <div [id]="'errorAlertInstance_' + i" [class]="'alert alert-danger ' + 'errorAlertInstance_' + i">
+          {{error.message}} <span style="float:right; position: relative; top: .2rem;" (click)="clearErrors(i)" class="icon-x-close3"></span>
+        </div>
+      </ng-container>
+    </ng-container>
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+      <div class="form-group mb-6">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" #titleField [(ngModel)]="this.title" class="form-control">
+      </div>
+      <div class="actions " style="margin-top: 10px;">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-light" (click)="doClose(); false">Cancel</button>
+      </div>
+    </form>
+  </ng-container>
+
+</div>
+<ng-template #loading>
+  <div class="load-spinner" style="display: flex; justify-content: center; align-items: center; min-height: 400px;">
+    <app-loading></app-loading>
+  </div>
+</ng-template>

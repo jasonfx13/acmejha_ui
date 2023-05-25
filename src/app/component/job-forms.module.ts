@@ -3,15 +3,17 @@ import { CommonModule } from '@angular/common';
 import { JobFormComponent } from './job-form/job-form.component';
 import {SharedModule} from "./shared/shared.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { HazardsFormComponent } from './hazards-form/hazards-form.component';
+import { HazardsSafeguardsFormComponent } from './hazards-safeguards-form/hazards-safeguards-form.component';
 import { AddStepFormComponent } from './add-step-form/add-step-form.component';
+import { EditFieldFormComponent } from './edit-field-form/edit-field-form.component';
 
 
 @NgModule({
   declarations: [
     JobFormComponent,
-    HazardsFormComponent,
+    HazardsSafeguardsFormComponent,
     AddStepFormComponent,
+    EditFieldFormComponent,
   ],
     exports: [
         JobFormComponent,

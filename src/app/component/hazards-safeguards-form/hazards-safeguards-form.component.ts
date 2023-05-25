@@ -6,11 +6,11 @@ import {DataService} from "../../service/data.service";
 import {TitleCasePipe} from "@angular/common";
 
 @Component({
-  selector: 'app-hazards-form',
-  templateUrl: './hazards-form.component.html',
-  styleUrls: ['./hazards-form.component.scss']
+  selector: 'app-hazards-safeguards-form',
+  templateUrl: './hazards-safeguards-form.component.html',
+  styleUrls: ['./hazards-safeguards-form.component.scss']
 })
-export class HazardsFormComponent implements OnInit {
+export class HazardsSafeguardsFormComponent implements OnInit {
   @Input() step: StepModel | any;
   @Input() Job: JobModel | any;
   @Input() field:string = '';

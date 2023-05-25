@@ -9,8 +9,6 @@
 </div>
 <div class="modal-body">
   <div class="create-steps-form">
-
-
     <ng-container *ngIf="initialized; else loading">
       <ng-container *ngIf="successMessage != ''">
         <div class="alert alert-success">
@@ -21,10 +19,6 @@
         <div class="form-group">
           <div formArrayName="formControlsArray">
             <div style="margin-bottom: 1rem;" *ngFor="let step of controls.controls; let i=index">
-              <!-- The repeated alias template -->
-<!--              <label-->
-<!--                for="title-{{i}}">Title:-->
-<!--              </label>-->
               <input
                 (focus)="successMessage = ''"
                 class="form-control"
@@ -34,28 +28,21 @@
                 [formControlName]="i"
               >
             </div>
-
             <div class="add-hazard-placeholder">
               <button class="btn btn-light" type="button" (click)="addStep()">+ Add {{this.field |slice:0:-1 | titlecase}}</button>
             </div>
-
           </div>
         </div>
-
-
         <div class="actions">
-          <button class="btn btn-primary" type="submit">Submit</button>
-          <button class="btn btn-primary" (click)="clearForm();false">Clear</button>
+          <button class="btn btn-primary" type="submit">Save</button>
+          <button class="btn btn-light" (click)="clearForm();false">Clear</button>
         </div>
-
       </form>
     </ng-container>
-
   </div>
 </div>
 <ng-template #loading>
   <div class="load-spinner" style="display: flex; justify-content: center; align-items: center; min-height: 400px;">
     <app-loading></app-loading>
   </div>
-
 </ng-template>

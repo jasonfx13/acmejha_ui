@@ -14,10 +14,7 @@
         <div class="alert alert-danger" *ngFor="let error of errors">
           {{error.message}}
         </div>
-
       </ng-container>
-
-<!--      <ng-container *ngIf="formStep == 'create-job'">-->
       <ng-container *ngIf="!sucess; else showSucessMessage">
         <div class="jobs-form-container">
           <form (ngSubmit)="onSubmit(f)" #f="ngForm">
@@ -55,9 +52,7 @@
                 #author="ngModel"
                 placeholder="Enter Your Name"
               >
-
             </div>
-
             <div
               class="form-group"
             >
@@ -76,8 +71,6 @@
                 rows="3"
               ></textarea>
             </div>
-
-
             <button type="submit" class="btn btn-primary">Save</button>
           </form>
           <div class="info-box" style="fong-size: .8rem; margin: 1rem 0;">
@@ -93,16 +86,8 @@
           <button class="btn btn-primary" (click)="doClose()">Close</button>
         </div>
       </ng-template>
-
-<!--      <ng-container *ngIf="formStep == 'create-steps'">-->
-<!--        <app-steps-form [job]="this.job" [modal]="modal" (doEmittProcessing)="doSetProcessing($event)"></app-steps-form>-->
-<!--      </ng-container>-->
     </ng-container>
-
-
-
   </div>
-
 
   <ng-template #isLoading>
     <div class="load-spinner" style="display: flex; justify-content: center; align-items: center; min-height: 400px;">

@@ -35,6 +35,10 @@ export class DataService {
     return this.http.patch(this.env.apiEndpoint + '/steps/' + step.id, step)
   }
 
+  editField(data: any, field: string) {
+    return this.http.patch(this.env.apiEndpoint + '/'+field+'/' + data.id, data)
+  }
+
   deleteStep(stepId: number) {
     return this.http.delete(this.env.apiEndpoint + '/steps/' + stepId)
   }

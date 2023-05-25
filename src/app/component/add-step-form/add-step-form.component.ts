@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {JobModel} from "../../model/job.model";
 import {NgForm} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -13,6 +13,9 @@ export class AddStepFormComponent implements OnInit {
   @Input() job: JobModel|any;
   @Output() doEmitData: EventEmitter<any> = new EventEmitter<any>();
   errors: any = [];
+  successMessage = '';
+  @Input() editMode = false
+  @ViewChild('stepTitle') stepTitle: ElementRef | undefined
   constructor(
     private modalService: NgbModal,
     private dataService: DataService
@@ -35,6 +38,9 @@ export class AddStepFormComponent implements OnInit {
     this.dataService.addStep(data).subscribe({
       next: (res) => {
         this.doEmitData.emit(res);
+        this.successMessage = 'Step Added Sucessfully'
+        // @ts-ignore
+        this.stepTitle.nativeElement.value = ''
       },
       error: (err) => {
         console.log(err)

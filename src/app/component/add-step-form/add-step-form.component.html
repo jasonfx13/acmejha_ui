@@ -1,7 +1,5 @@
 <div class="modal-header">
-
   <h4 class="modal-title" id="modal-title">Add New Step</h4>
-
   <button
     type="button"
     class="btn-close"
@@ -15,10 +13,15 @@
       {{error.message}}
     </div>
   </ng-container>
+  <ng-container *ngIf="successMessage != ''">
+    <div class="alert alert-success">
+      {{successMessage}}
+    </div>
+  </ng-container>
 <form (ngSubmit)="doAddStep(stepForm)" #stepForm="ngForm">
   <div class="form-group mb-6">
     <label for="title">Title</label>
-    <input type="text" id="title" name="title" #stepTitle ngModel class="form-control">
+    <input type="text" (focus)="successMessage = ''" id="title" name="title" #stepTitle ngModel class="form-control">
   </div>
   <div class="actions " style="margin-top: 10px;">
     <button type="submit" class="btn btn-primary">Add</button>

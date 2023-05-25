@@ -36,8 +36,8 @@
 }
 button {
   .icon-addicon {
-    font-size: .8rem;
-    margin-right: .4rem;
+    //font-size: .8rem;
+
   }
 }
 .actions {
@@ -54,13 +54,32 @@ form {
   }
 }
 table {
+  thead {
+    tr {
+      th {
+        button.add-fields {
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          font-size: .5rem;
+          width: 25px;
+          height: 25px;
+          margin-left: .4rem;
+          .icon-addicon {
+            position: relative;
+            top: .05rem;
+          }
+        }
+      }
+    }
+  }
   tbody {
     tr {
       td {
         //border-bottom: thin solid #ededed;
         min-width: 200px;
         font-size: .9rem;
-
+        position: relative;
 
         span:not(.utility_menu):not(.dropdown-container) {
           max-width: 300px;
@@ -70,7 +89,6 @@ table {
           margin: 0 0 0 0;
           list-style-type: none;
           padding: 0;
-          list-style-type: circle;
           li {
             //display: flex;
             display: flex;
@@ -89,6 +107,7 @@ table {
           width: 33%;
         }
       }
+
     }
   }
 }
