@@ -8,6 +8,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./component/shared/shared.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { AreYouSureComponent } from './component/are-you-sure/are-you-sure.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { AreYouSureComponent } from './component/are-you-sure/are-you-sure.compo
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     NgbModule,
     HttpClientModule,

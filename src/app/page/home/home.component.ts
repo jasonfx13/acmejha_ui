@@ -6,11 +6,42 @@ import {HazardModel, JobModel, SafeguardModel, StepModel} from "../../model/job.
 import {NgForm} from "@angular/forms";
 import {AreYouSureComponent} from "../../component/are-you-sure/are-you-sure.component";
 import {HazardsFormComponent} from "../../component/hazards-form/hazards-form.component";
+import {AddStepFormComponent} from "../../component/add-step-form/add-step-form.component";
+import {animate, keyframes, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('easeIn', [
+      transition('void => *', animate(300, keyframes([
+        style({
+          transform: 'translateX(-300px)',
+          opacity: 0,
+          height: '*'
+        }),
+        style({
+          transform: 'translateX(0)',
+          opacity: 1,
+          height: '*'
+        })
+      ]))),
+      transition('* => void', animate(300, keyframes([
+        style({
+          transform: 'translateX(0)',
+          opacity: 1,
+          height: '*'
+        }),
+        style({
+          transform: 'translateX(-300px)',
+          opacity: 0,
+          height: '*',
+          color: '#FF0000'
+        })
+      ]))),
+    ])
+  ]
 })
 export class HomeComponent implements OnInit {
   jobs: JobModel[] | any[] = [];
@@ -31,16 +62,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.dataService.getJobs(true).subscribe({
-      next: (res: any) => {
-        this.jobs = res.data
-        this.loading = false
-      },
-      error: (err) => {
-        this.handleErrors(false, err)
-        this.loading = false
-      }
-    })
+    this.loadJobs()
   }
 
   createNewJob(content: any) {
@@ -116,7 +138,8 @@ export class HomeComponent implements OnInit {
       if(returnData.length > 0) {
         returnData.forEach((d) => {
           // @ts-ignore
-          step[field].push({title:d.title, stepId:d.step_id})
+          // step[field].push({title:d.title, stepId:d.step_id})
+          this.loadJobs();
         })
       }
     })
@@ -169,34 +192,38 @@ export class HomeComponent implements OnInit {
     this.jobs.push(event);
   }
 
-  doAddStep(form: NgForm, job:JobModel|any) {
-    if(form.value.title == '') {
-      this.errors.push({message: 'Title is required'})
-      return
-    }
+  doAddStep(job:JobModel|any) {
+    const modalRef = this.modalService.open(AddStepFormComponent);
 
-    let data = {
-      title: form.value.title,
-      jobId: job.id
-    }
+    modalRef.componentInstance.job = job;
 
-    this.dataService.addStep(data).subscribe({
+    modalRef.componentInstance.doEmitData.subscribe({
       next: (res: any) => {
-        if(this.jobs.find((j) => j.id == job.id).steps) {
-          this.jobs.find((j) => j.id == job.id).steps.push(res.data);
-        } else {
-          this.jobs.find((j) => j.id == job.id).steps = []
-          this.jobs.find((j) => j.id == job.id).steps.push(res.data);
+        if(res) {
+          this.loadJobs();
         }
+      }
+    })
+  }
+  showSidePanel = false;
+  jobToEdit: JobModel|any;
+  toggleShowSidePanel(job: JobModel, editMode:boolean) {
+    this.jobToEdit = job;
+    this.showSidePanel = !this.showSidePanel;
+    this.editMode = editMode;
+  }
 
+  loadJobs() {
+    this.dataService.getJobs(true).subscribe({
+      next: (res: any) => {
+        this.jobs = res.data
         this.loading = false
       },
       error: (err) => {
-        this.handleErrors(false, err);
+        this.handleErrors(false, err)
         this.loading = false
       }
     })
-    this.stepTitle.nativeElement.value = '';
   }
 
   doUpdateStep(form: NgForm, job: JobModel, stepId: number, i:number) {
@@ -214,6 +241,9 @@ export class HomeComponent implements OnInit {
       },
       error: (err) => {
         this.handleErrors(false, err);
+      },
+      complete: () => {
+
       }
     })
   }
@@ -226,7 +256,7 @@ export class HomeComponent implements OnInit {
     }
 
     // @ts-ignore
-    step.hazards[i].title = form.value.editHazardTitle
+    // step.hazards[i].title = form.value.editHazardTitle
 
     this.dataService.updateHazard(data).subscribe({
       next: (res) => {
@@ -234,6 +264,8 @@ export class HomeComponent implements OnInit {
       },
       error: (err) => {
         this.handleErrors(false, err);
+      }, complete: () => {
+
       }
     })
   }

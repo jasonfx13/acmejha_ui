@@ -1,0 +1,28 @@
+<div class="modal-header">
+
+  <h4 class="modal-title" id="modal-title">Add New Step</h4>
+
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="doClose()"
+  ></button>
+</div>
+<div class="modal-body">
+  <ng-container *ngIf="errors.length > 0">
+    <div class="alert alert-danger" *ngFor="let error of errors">
+      {{error.message}}
+    </div>
+  </ng-container>
+<form (ngSubmit)="doAddStep(stepForm)" #stepForm="ngForm">
+  <div class="form-group mb-6">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" #stepTitle ngModel class="form-control">
+  </div>
+  <div class="actions " style="margin-top: 10px;">
+    <button type="submit" class="btn btn-primary">Add</button>
+    <button class="btn btn-light" (click)="doClose(); false">Cancel</button>
+  </div>
+</form>
+</div>
