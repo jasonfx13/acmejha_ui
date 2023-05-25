@@ -77,13 +77,20 @@
                       </td>
                     </tr>
                     </tbody>
+
                     </ng-container>
+
                   </table>
 
                 </div>
 
               </ng-container>
+              <ng-container *ngIf="jobs[jobIndex].steps.length == 0">
+<!--                <div class="form-placeholder">-->
+                  <button class="btn btn-outline-primary add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span> Add Step</button>
+<!--                </div>-->
 
+              </ng-container>
 
 
               <div class="actions" style="margin-top: 1rem;">
