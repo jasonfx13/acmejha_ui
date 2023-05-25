@@ -27,9 +27,9 @@
 
                       <thead *ngIf="stepIndex == 0">
                         <tr>
-                          <th>Tasks/Steps <button class="btn btn-outline-primary btn-sm add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span></button></th>
-                          <th>Hazards <button class="btn btn-outline-primary btn-sm add-fields" (click)="addFields(step, 'hazards')"><span class="icon-addicon"></span></button></th>
-                          <th>Safeguards <button class="btn btn-outline-primary btn-sm add-fields" (click)="addFields(step, 'safeguards')"><span class="icon-addicon"></span></button></th>
+                          <th>Tasks/Steps </th>
+                          <th>Hazards </th>
+                          <th>Safeguards </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -43,7 +43,7 @@
                             </div>
                           </span>
                         </span>
-
+                          <a class="add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span> Add step</a>
                         </td>
                         <td>
                           <ul *ngIf="step && step.hazards && step.hazards.length > 0;">
@@ -59,7 +59,7 @@
 
                             </li>
                           </ul>
-
+                          <a class="add-fields" (click)="addFields(step, 'hazards')"><span class="icon-addicon"></span>Add hazards</a>
                         </td>
                         <td>
                           <ul *ngIf="step && step.safeguards && step.safeguards.length > 0;">
@@ -73,7 +73,7 @@
                               </span>
                             </li>
                           </ul>
-
+                          <a class="add-fields" (click)="addFields(step, 'safeguards')"><span class="icon-addicon"></span>Add Safeguards</a>
                         </td>
                       </tr>
                       </tbody>
@@ -82,17 +82,9 @@
                 </div>
               </ng-container>
               <ng-container *ngIf="job.steps.length == 0">
-                <ng-container *ngIf="job.steps.length == 0">
-                  <table  class="table" style="margin-bottom: 20px;">
-                    <thead>
-                      <tr>
-                        <th>Tasks/Steps <button class="btn btn-outline-primary btn-sm add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span></button></th>
-                        <th class="disabled"><span class="disabled" style="opacity: .6;">Hazards</span></th>
-                        <th class="disabled"><span class="disabled" style="opacity: .6;">Safeguards</span></th>
-                      </tr>
-                    </thead>
-                  </table>
-                </ng-container>
+                <div class="form-placeholder">
+                  <button class="btn btn-light btn-sm add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span> Add Step</button>
+                </div>
               </ng-container>
 
 
