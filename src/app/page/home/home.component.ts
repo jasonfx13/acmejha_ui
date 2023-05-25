@@ -7,6 +7,7 @@ import {AreYouSureComponent} from "../../component/are-you-sure/are-you-sure.com
 import {HazardsSafeguardsFormComponent} from "../../component/hazards-safeguards-form/hazards-safeguards-form.component";
 import {AddStepFormComponent} from "../../component/add-step-form/add-step-form.component";
 import {EditFieldFormComponent} from "../../component/edit-field-form/edit-field-form.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -61,116 +63,15 @@ export class HomeComponent implements OnInit {
   }
   editJobInstance = 'editJobInstance_'
 
+  doAddNewJob(event: any) {
+    this.jobs.push(event);
+  }
+
   editJob(job: any) {
     const modalRef = this.modalService.open(JobFormComponent);
     modalRef.componentInstance.job = job;
     modalRef.componentInstance.editMode = true;
     modalRef.componentInstance.doEmitData.subscribe(() => {
-    })
-  }
-
-  editField(data:any, field:string, relativeField:string) {
-    // this.editStepFormInstance = 'editStepFormInstance_' + stepId
-    const modalRef = this.modalService.open(EditFieldFormComponent);
-
-    modalRef.componentInstance.field = field
-    modalRef.componentInstance.data = data
-    modalRef.componentInstance.relativeField = relativeField
-
-    modalRef.componentInstance.doLoadJobs.subscribe((res:any) => {
-      if(res) {
-        this.loadJobs();
-      }
-    })
-
-  }
-
-  deleteStep(step: StepModel|any, job: JobModel, i:number) {
-    const modalRef = this.modalService.open(AreYouSureComponent);
-    modalRef.componentInstance.entity = {dialogTitle: 'Step Deletion', label: step.title}
-    modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
-      if(res) {
-        this.dataService.deleteStep(step.id).subscribe({
-          next: (res) => {
-            // @ts-ignore
-            job.steps?.splice(i, 1)
-          },
-          error: (err) => {
-            this.handleErrors(false, err);
-          }
-        })
-      }
-    })
-  }
-
-  addFields(step: StepModel, field:string) {
-    let modalRef = this.modalService.open(HazardsSafeguardsFormComponent);
-    modalRef.componentInstance.step = step;
-    modalRef.componentInstance.field = field;
-
-    modalRef.componentInstance.dataEmitter.subscribe((res:any) => {
-      let returnData:any[] = res;
-      if(returnData.length > 0) {
-        returnData.forEach((d) => {
-          // @ts-ignore
-          // step[field].push({title:d.title, stepId:d.step_id})
-          this.loadJobs();
-        })
-      }
-    })
-  }
-
-  deleteHazard(hazard: HazardModel|any, step: StepModel, i:number) {
-    const modalRef = this.modalService.open(AreYouSureComponent);
-    modalRef.componentInstance.entity = {dialogTitle: 'Hazard Deletion', label: hazard.title}
-    modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
-      if(res) {
-        this.dataService.deleteHazard(hazard.id).subscribe({
-          next: (res) => {
-            // @ts-ignore
-            step.hazards?.splice(i, 1)
-          },
-          error: (err) => {
-            this.handleErrors(false, err);
-          }
-        })
-      }
-    })
-  }
-
-  deleteSafeguard(safeguard: SafeguardModel|any, step: StepModel, i:number) {
-    const modalRef = this.modalService.open(AreYouSureComponent);
-    modalRef.componentInstance.entity = {dialogTitle: 'Safeguard Deletion', label: safeguard.title}
-    modalRef.componentInstance.doDeleteEmitter.subscribe((res: boolean) => {
-      if(res) {
-        this.dataService.deleteSafeguard(safeguard.id).subscribe({
-          next: (res) => {
-            // @ts-ignore
-            step.safeguards?.splice(i, 1)
-          },
-          error: (err) => {
-            this.handleErrors(false, err);
-          }
-        })
-      }
-    })
-  }
-
-  doAddNewJob(event: any) {
-    this.jobs.push(event);
-  }
-
-  doAddStep(job:JobModel|any) {
-    const modalRef = this.modalService.open(AddStepFormComponent);
-
-    modalRef.componentInstance.job = job;
-
-    modalRef.componentInstance.doEmitData.subscribe({
-      next: (res: any) => {
-        if(res) {
-          this.loadJobs();
-        }
-      }
     })
   }
 
@@ -202,5 +103,7 @@ export class HomeComponent implements OnInit {
     }
 
   }
-
+  goToJobPage(job:JobModel) {
+    this.router.navigate(['/job/'+job.id])
+  }
 }

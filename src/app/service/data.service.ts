@@ -15,6 +15,10 @@ export class DataService {
     return this.http.get(this.env.apiEndpoint + '/jobs' + (getChildData ? '?includeSteps=1' : ''))
   }
 
+  getJob(jobId:number) {
+    return this.http.get(this.env.apiEndpoint + '/jobs/' + jobId + ('?includeSteps=1'))
+  }
+
   addJob(job: JobModel) {
     return this.http.post(this.env.apiEndpoint + '/jobs', job);
   }
