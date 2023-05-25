@@ -3,8 +3,8 @@
 This project is running on <a href="https://www.npmjs.com/package/@angular/cli/v/14.2.11" target="_blank">Angular 14.2.11</a>
 
 <ul>
-<li>Be sure <a href="https://nodejs.org/en">NodeJS</a> is installed</li>
-<li>Install the <a href="https://angular.io/cli">Angular CLI</a></li>
+<li>Prerequisite: Be sure <a href="https://nodejs.org/en">NodeJS</a> is installed</li>
+<li>Prerequisite: Install the <a href="https://angular.io/cli">Angular CLI</a></li>
 <li>Download or clone project to a local folder</li>
 <li>Open a command line interface inside project folder</li>
 
