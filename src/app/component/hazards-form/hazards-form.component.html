@@ -1,8 +1,11 @@
 <div class="modal-header">
   <h4 class="modal-title" id="modal-basic-title">Create {{this.field | titlecase}}</h4>
-  <button ngbAutofocus type="button" class="close" aria-label="Close" (click)="doClose()">
-    <span aria-hidden="true">×</span>
-  </button>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="doClose()"
+  ></button>
 </div>
 <div class="modal-body">
   <div class="create-steps-form">

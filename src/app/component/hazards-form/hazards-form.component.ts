@@ -12,6 +12,7 @@ import {TitleCasePipe} from "@angular/common";
 })
 export class HazardsFormComponent implements OnInit {
   @Input() step: StepModel | any;
+  @Input() Job: JobModel | any;
   @Input() field:string = '';
   @Output() dataEmitter: EventEmitter<any> = new EventEmitter<any>();
   initialized = false

@@ -1,10 +1,11 @@
-ul {
-  //display: flex;
-  //list-style-type: none;
-  //margin: 0;
-  //padding: 0;
-  li {
-    flex: 1 1;
+.header-toolbar {
+  h1 {
+
+  }
+  button {
+    max-height: 38px;
+    position: relative;
+    top: .2rem;
   }
 }
 .info-box {
@@ -19,10 +20,10 @@ ul {
   width: 100%;
   padding: .8rem;
   border-radius: 10px;
-  border: 3px dashed #ccc;
+  border: 2px dashed #ededed;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0;
+  //margin: 1rem 0;
   &.form-placeholder-td {
     padding: .4rem;
     //font-size: .8rem;
@@ -59,6 +60,34 @@ table {
         //border-bottom: thin solid #ededed;
         min-width: 200px;
         font-size: .9rem;
+
+
+        span:not(.utility_menu):not(.dropdown-container) {
+          max-width: 300px;
+          display: flex;
+        }
+        ul {
+          margin: 0 0 0 0;
+          list-style-type: none;
+          padding: 0;
+          list-style-type: circle;
+          li {
+            //display: flex;
+            display: flex;
+            padding: .4rem;
+            border: thin solid #ededed;
+            border-radius: .4rem;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: .4rem;
+          }
+        }
+        span.dropdown-container {
+          margin-left: .4rem;
+        }
+        @media(min-width: 960px) {
+          width: 33%;
+        }
       }
     }
   }
@@ -67,6 +96,18 @@ a.add-fields {
   cursor: pointer;
   font-size: .8rem;
   color: #777;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-decoration: none;
+  border-bottom: #ccc dotted thin;
+  span {
+    font-size: .4rem;
+    margin-right: .3rem;
+  }
+  &:hover {
+    color: #0080FF;
+  }
 }
 .scroll-container {
   z-index: 1;
@@ -79,7 +120,20 @@ a.add-fields {
     }
   }
   max-width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
   //overflow: hidden;
 
+}
+.side-panel {
+  transition: all .3s ease-in;
+  position: absolute;
+  left: -400px;
+  width: 400px;
+  height: 100%;
+  z-index: 99;
+  top: 0;
+  background: #ededed;
+  &.show {
+    left: 0;
+  }
 }

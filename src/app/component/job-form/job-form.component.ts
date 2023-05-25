@@ -13,8 +13,8 @@ import {DataService} from "../../service/data.service";
 export class JobFormComponent implements OnInit {
   @Output() doEmitData = new EventEmitter;
   @Input() modal: any;
-  job: JobModel | any;
-  editMode = false
+  @Input() job: JobModel | any;
+  @Input() editMode = false
   errors: any[] = [];
   sucess = false;
   jobTitle = '';
@@ -29,6 +29,7 @@ export class JobFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.editMode);
     if(this.job) {
       this.jobTitle = this.job.title
       this.jobDescription = this.job.description
