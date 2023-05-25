@@ -5,32 +5,32 @@
 
     </div>
     <ng-container *ngIf="loaded; else isLoading">
-
-      <ng-container *ngIf="job.steps && job.steps.length > 0">
-        <div class="job-header">
-          <div class="cell flex-column d-flex">
-            <h3 class="value">{{job.title}}</h3>
-          </div>
-          <div class="details">
-            <p class="description" *ngIf="job.description">
-              {{job.description}}
-            </p>
-            <ul class="m-0 p-0">
-              <li class="d-flex">
-                <div class="cell label created-by">
-                  <div class="label">Created By</div>
-                  <div class="value">                  {{job.createdBy}}</div>
-                </div>
-                <div class="cell">
-                  <div class="label">Date Created</div>
-                  <div class="value">
-                    {{job.dateEntered | date:'MMMM d, YYYY'}}
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
+      <div class="job-header mb-3">
+        <div class="cell flex-column d-flex">
+          <h3 class="value">{{job.title}}</h3>
         </div>
+        <div class="details">
+          <p class="description" *ngIf="job.description">
+            {{job.description}}
+          </p>
+          <ul class="m-0 p-0">
+            <li class="d-flex">
+              <div class="cell label created-by">
+                <div class="label">Created By</div>
+                <div class="value">                  {{job.createdBy}}</div>
+              </div>
+              <div class="cell">
+                <div class="label">Date Created</div>
+                <div class="value">
+                  {{job.dateEntered | date:'MMMM d, YYYY'}}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <ng-container *ngIf="job.steps && job.steps.length > 0">
+
         <div class="scroll-container">
           <table  class="table" style="margin-bottom: 20px;">
             <thead>
