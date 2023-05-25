@@ -19,7 +19,7 @@ This project is running on <a href="https://www.npmjs.com/package/@angular/cli/v
 
 Project should be up and running at `http://localhost:4200/`
 
-Be sure to edit the `apiEndpoint` value in `src/environments/environement.ts` if it differs from the default endpoint.
+Be sure to edit the `apiEndpoint` value in `src/environments/environement.ts` if the value of your laravel server endpoint differs from the default endpoint.
 
 ## Development server
 
