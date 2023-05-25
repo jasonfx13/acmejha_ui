@@ -34,7 +34,8 @@ export class HomeComponent implements OnInit {
   createNewJob(content: any) {
     const modalRef = this.modalService.open(JobFormComponent);
     modalRef.componentInstance.doEmitData.subscribe((receivedEntry: any) => {
-      this.jobs.push(receivedEntry);
+      if(receivedEntry)
+        this.loadJobs()
     })
   }
 

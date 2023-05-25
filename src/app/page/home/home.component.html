@@ -85,15 +85,16 @@
                 </div>
 
               </ng-container>
-              <ng-container *ngIf="jobs[jobIndex].steps.length == 0">
+              <ng-container *ngIf="job.steps.length == 0">
 <!--                <div class="form-placeholder">-->
-                  <button class="btn btn-outline-primary add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span> Add Step</button>
+                <button class="btn btn-outline-primary add-fields" (click)="doAddStep(job)"><span class="icon-addicon"></span> Add Step</button>
 <!--                </div>-->
 
               </ng-container>
 
 
               <div class="actions" style="margin-top: 1rem;">
+
                 <button class="btn btn-primary" (click)="editJob(job)">Edit Job Details</button>
                 <button class="btn btn-danger" (click)="deleteJob(job)">Delete Job</button>
               </div>
