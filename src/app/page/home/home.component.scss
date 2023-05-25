@@ -69,6 +69,15 @@ table {
             position: relative;
             top: .05rem;
           }
+
+        }
+        button:disabled {
+          cursor: not-allowed !important;
+        }
+        &.disabled {
+          span, button {
+            cursor: not-allowed !important;
+          }
         }
       }
     }
