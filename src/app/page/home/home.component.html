@@ -12,7 +12,7 @@
         <h1 class="h3">Job Hazard Analysis</h1>
       </div>
 
-      <ng-container *ngIf="jobs.length > 0; else noJobs">
+      <ng-container *ngIf="jobs.length > 0;">
         <ng-container *ngFor="let job of jobs">
           <ul class="job-container">
             <li class="flex-li justify-content-between" >
@@ -43,18 +43,11 @@
         </ng-container>
       </ng-container>
 
-      <div class="form-placeholder" style="margin: 1rem 0;" *ngIf="jobs.length > 0">
+      <div class="form-placeholder" style="margin: 1rem 0;" >
         <button class="btn btn-light" (click)="createNewJob(newJobForm)"><span class="icon-addicon"></span> Add New Job</button>
       </div>
 
-      <ng-template #noJobs>
-        <div class="info-box">
-          <p>Get started with a new Job Hazard Analysis</p>
-          <div class="actions">
-            <button class="btn btn-primary" (click)="createNewJob(newJobForm)">Add New Job</button>
-          </div>
-        </div>
-      </ng-template>
+
     </ng-container>
   </div>
 </div>
